@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Observables â KnockoutJS</title>
+</head>
+<body>
+<div>
+<p data-bind="text: phoneName"></p>
+<p data-bind="text: phoneCompany"></p>
+</div>
+ 
+<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.0.js"></script>
+<script>
+var viewModel = {
+    phoneName: ko.observable("Lumia 650"),
+    phoneCompany: ko.observable("Microsoft")
+};
+ko.applyBindings(viewModel);
+</script>
+</body>
