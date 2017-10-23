@@ -1,21 +1,58 @@
+﻿<!--<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Observables в KnockoutJS</title>
+</head>
+<body>
+    <div>
+        <ul data-bind="foreach: phones">
+            <li data-bind="text: $data"></li>
+        </ul>
+    </div>
+    <p><button id="changePhoneBtn">Изменить</button></p>
+    <script type="text/javascript" src="knockout-3.4.2.debug.js"></script>
+    <script>
+        var viewModel = {
+            phones: ko.observableArray(["iPhone 6S", "LG G5", "Lumia 950", "Nexus 6P"])
+        };
+        ko.applyBindings(viewModel);
+
+        var changePhoneBtn = document.getElementById("changePhoneBtn");
+        changePhoneBtn.addEventListener("click", function (e) {
+            console.log(viewModel.phones());
+            viewModel.phones().remove("iPhone 6S");
+        });
+    </script>
+</body>
+</html> -->
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Observables � KnockoutJS</title>
+    <meta charset="utf-8">
+    <title>Привязка в KnockoutJS</title>
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.0.js"></script>
 </head>
 <body>
-<div>
-<p data-bind="text: phoneName"></p>
-<p data-bind="text: phoneCompany"></p>
-</div>
- 
-<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.0.js"></script>
-<script>
-var viewModel = {
-    phoneName: ko.observable("Lumia 650"),
-    phoneCompany: ko.observable("Microsoft")
+    <p>Полное имя: <span data-bind="text: fullName"></span></p>
+    <button id="updateBtn">Update</button>
+    <script>
+function PersonViewModel() {
+    var self = this;
+    self.firstName = ko.observable("Том");
+    self.lastName = ko.observable("Джонс");
+    self.fullName = ko.computed(function() {
+        return self.firstName() + " " + self.lastName();
+    });
 };
-ko.applyBindings(viewModel);
-</script>
+var person = new PersonViewModel();
+ko.applyBindings(person);
+
+var updateBtn = document.getElementById("updateBtn");
+updateBtn.addEventListener("click", function (e) {
+
+    person.firstName("Боб");
+});
+    </script>
 </body>
+</html>
