@@ -1,53 +1,84 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<script src="jquery-3.2.1.js"></script>
-<script src="lodash.js"></script>
-<script src="Chart.js"></script>
+    <script src="jquery-3.2.1.js"></script>
+    <script src="lodash.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script src="Chart.js"></script>
 </head>
 <body>
-<script>
+    <script>
 
-        function loadReports(){
-		orders = JSON.parse(localStorage.getItem("OrdersSC" ));
-		orders_closed =   _.reject( orders, { status_name:"Отменен"});
-		orders_canceled = _.filter( orders, { status_name: "Отменен" } );
-	
+        function loadReports() {
+            orders = JSON.parse(localStorage.getItem("OrdersSC"));
+            orders_closed = _.reject(orders, { status_name: "Отменен" });
+            orders_canceled = _.filter(orders, { status_name: "Отменен" });
 
-          /*$.ajax( {
-                url: 'https://aivanov:20lbf,tnjy15@sc-diabeton.ru/api/admin_orders/', 
-                type: 'POST',
-		dataType: 'jsonp',
-                data: { 
-                    'start-date': '08-05-2017', 
-                    'finish_date':'26-09-2017'
-                },
-		//beforeSend: function(request) {
-		//    request.setRequestHeader('Authorization', 'Basic YWl2YW5vdjoyMGxiZix0bmp5MTU=');
-		//},
-                //headers : { 
-                //    'Authorization' : 'Basic YWl2YW5vdjoyMGxiZix0bmp5MTU='
-                //},
-                
-                success:  function(json){
-                    //$('jsonOrders').append(json); }, 
-					console.log(json);
-				sander = json;},
-            
-                error: function (error) {
-                    console.log(error);
-                }                    
-          })*/
+            ViewModel = {
+                brands: ko.observableArray( 
+                    _.map( 
+                        _.uniq( _.map( orders_closed, 'brand_name') ), 
+                        function(entry){ 
+                            return { "name" : entry, "visible" : true };
+                        } 
+                    )
+                ),
+
+                //_.map( ViewModel.brands(), function(entry) { return { "name" : entry, "visible" : true })
+
+                cities: ko.observableArray( _.uniq(_.map( orders_closed, 'city')))
+            }
+
+
+            ko.applyBindings(ViewModel);
+
+
+            /*$.ajax( {
+                  url: 'https://aivanov:20lbf,tnjy15@sc-diabeton.ru/api/admin_orders/',
+                  type: 'POST',
+          dataType: 'jsonp',
+                  data: {
+                      'start-date': '08-05-2017',
+                      'finish_date':'26-09-2017'
+                  },
+          //beforeSend: function(request) {
+          //    request.setRequestHeader('Authorization', 'Basic YWl2YW5vdjoyMGxiZix0bmp5MTU=');
+          //},
+                  //headers : {
+                  //    'Authorization' : 'Basic YWl2YW5vdjoyMGxiZix0bmp5MTU='
+                  //},
+
+                  success:  function(json){
+                      //$('jsonOrders').append(json); },
+                      console.log(json);
+                  sander = json;},
+
+                  error: function (error) {
+                      console.log(error);
+                  }
+            })*/
         }
-        </script>
+
+    </script>
     <div>
         <a href="#" onclick="loadReports()">Загрузить данные</a>
-        <p id="cities"><p>
-        <p id="orders_closed"><p>
-        <p id="orders_canceled"><p>
+        <div id="cities">
+            <ul data-bind="foreach: cities">
+                <li data-bind="text: $data"></li>
+            </ul>
+        </div>
+
+        <div id="brands">
+            <ul data-bind="foreach: { data: brands, as: 'brand'}">
+                <li>
+                    <input type="checkbox" data-bind="checked: brand.visible"/> 
+                    <span data-bind="text: brand.name"/>
+                </li>
+            </ul>
+        </div>
+
+        <div id="orders_closed"></div>
+        <div id="orders_canceled"></div>
     </div>
-	<svg height="500" width="500">>
-	  <polygon points="100,10 40,198 190,78 10,78 160,198" style="fill:lime;stroke:purple;stroke-width:5;fill-rule:nonzero;" />
-	</svg>
 </body>
 </html>

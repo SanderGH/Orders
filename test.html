@@ -31,28 +31,30 @@
 <head>
     <meta charset="utf-8">
     <title>Привязка в KnockoutJS</title>
+    <script type="text/javascript" src="jquery-3.2.1.js"></script>
     <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.0.js"></script>
 </head>
 <body>
-    <p>Полное имя: <span data-bind="text: fullName"></span></p>
-    <button id="updateBtn">Update</button>
-    <script>
-function PersonViewModel() {
-    var self = this;
-    self.firstName = ko.observable("Том");
-    self.lastName = ko.observable("Джонс");
-    self.fullName = ko.computed(function() {
-        return self.firstName() + " " + self.lastName();
-    });
-};
-var person = new PersonViewModel();
-ko.applyBindings(person);
-
-var updateBtn = document.getElementById("updateBtn");
-updateBtn.addEventListener("click", function (e) {
-
-    person.firstName("Боб");
-});
+    <ul data-bind="foreach: { data: phones, as: 'phone'}">
+        <li>
+            <input type="checkbox" data-bind="checked: phone.isAvailable" />
+            <span data-bind="text: phone.model"></span>
+        </li>
+    </ul>
+    <script type="text/javascript">
+function Phone(model, available){
+    this.model = model;
+    this.isAvailable = available;
+}
+    var viewModel = {
+        phones: ko.observableArray([
+            new Phone("iPhone SE", true),
+            new Phone("Lumia 950", false),
+            new Phone("Zenfone 3", true),
+            new Phone("Xiaomi Mi5", false)
+        ])
+    };
+ ko.applyBindings(viewModel);
     </script>
 </body>
 </html>
