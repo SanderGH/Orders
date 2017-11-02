@@ -1,0 +1,48 @@
+<head>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"> </script>
+<script src="jquery-3.2.1.js"></script>
+
+</head>
+<body>
+<script type="text/javascript">
+    var moscow_map;
+        
+    function ChooseDelivery( num )
+{
+      var sss = $('#choice');
+	sss.append( "<p>" + num + "</p>");
+};
+    ymaps.ready(function(){
+        moscow_map = new ymaps.Map("first_map", {
+            center: [55.76, 37.64],
+            zoom: 10
+        });
+
+        myPlacemark = new ymaps.Placemark([55.76, 37.64], { 
+            hintContent: 'Москва, ул. Свободы, 89, корп.5', 
+//	    balloonContentHeader: 'HEADER',
+	    balloonContentBody: '<h4 style="margin-right:20px;"><a href="/contacts/g_moskva_ul_svobody_d89_korp5.html">Москва, ул. Свободы, 89, корп.5</a></h4><p>Тел.: <b class="format-phone" data-phone="+74954966000">+74954966000</b></p><p>Эл. почта: <a href="mailto:cdek_aw@cdek.ru">cdek_aw@cdek.ru</a></p><p>Режим работы:<br>пн-пт 10:00-20:00<br>сб 10:00-16:00<br>вс 10:00-14:00</p><br><strong onclick="ChooseDelivery(\'Москва, ул. Свободы, 89, корп.5\')">Выбрать</strong>', 
+//	    balloonContentFooter: 'FOTTER', 
+//            balloonContent: 'Столица России' 
+        }, { balloonPanelMaxMapArea: 0}
+	);
+        moscow_map.geoObjects.add(myPlacemark);
+
+        myPlacemark = new ymaps.Placemark([55.86, 37.64], { 
+            hintContent: 'Москва, ул. Римского-Корсакова, 8', 
+//	    balloonContentHeader: 'HEADER',
+	    balloonContentBody: '<h4 style="margin-right:20px;"><a href="/contacts/g_moskva_ul_svobody_d89_korp5.html">Москва, ул. Свободы, 89, корп.5</a></h4><p>Тел.: <b class="format-phone" data-phone="+74954966000">+74954966000</b></p><p>Эл. почта: <a href="mailto:cdek_aw@cdek.ru">cdek_aw@cdek.ru</a></p><p>Режим работы:<br>пн-пт 10:00-20:00<br>сб 10:00-16:00<br>вс 10:00-14:00</p><br><strong onclick="ChooseDelivery(\'Москва, ул. Римского-Корсакова, 8\')">Выбрать</strong>', 
+//	    balloonContentFooter: 'FOTTER', 
+//            balloonContent: 'Столица России' 
+        }, { balloonPanelMaxMapArea: 0}
+	);
+        moscow_map.geoObjects.add(myPlacemark);
+
+    });
+</script>
+
+    <p>Карта Москвы</p>
+    <div id="first_map" style="width:500px; height:400px"></div>
+    <p>Выбран пункт:</p>
+    <p id="choice"></p>
+</body>
