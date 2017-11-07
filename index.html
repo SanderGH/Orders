@@ -14,28 +14,49 @@
             orders_closed = _.reject(orders, { status_name: "Отменен" });
             orders_canceled = _.filter(orders, { status_name: "Отменен" });
 
-            saratov_orders = _.filter(orders_closed, { city: 'Саратов' });
-            saratov_sum = _.sumBy(saratov_orders, function (obj) { return Number(obj.sum) });
+            moscow = _.filter(orders_closed, { city: 'Москва' });
+            moscow_sum = _.sumBy(moscow, function (obj) { return Number(obj.sum) });
 
             ViewModel = {
                 brands: ko.observableArray(
                     _.map(
                         _.uniq(_.map(orders_closed, 'brand_name')), function (entry) {
-                            return { "name": entry, "visible": true };
+                            return { "name": entry, "visible": false };
                         }
                     )
                 ),
 
-                //_.map( ViewModel.brands(), function(entry) { return { "name" : entry, "visible" : true })
+                cities: ko.observableArray(_.map(
+                        _.uniq(_.map(orders_closed, 'city')), function (entry) {
+                            return { "name": entry, "visible": false };
+                        }
+                    )
+                ),
 
-                cities: ko.observableArray(_.uniq(_.map(orders_closed, 'city')))
-            }
+                choose_cities: ko.observableArray(_.filter(cities, 'visible')),
+
+                filtered_orders: ko.observableArray( _.filter(orders_closed, { 'city':'' } ) ),
+         
+                changeCities: function () {
+                    this.choose_cities(_.map(_.filter(this.cities(), 'visible'), 'name'));
+
+                    var sss = this.choose_cities();
+                    this.filtered_orders(_.filter(orders_closed, function (entry) {
+                        console.log(entry.city);
+                        return sss.indexOf(entry.city) != -1
+                    }))
+                }
+
+
+
+            };
 
             ko.applyBindings(ViewModel);
 
+            
        }
 
-        _.transform(items, function (result, entry) {
+  /*      _.transform(items, function (result, entry) {
             console.log(entry);
             items = _.map(entry);
             console.log(items);
@@ -45,8 +66,8 @@
                         'code' : item.code
                     }
                     console.log(newObj);
-            })*/
-        })
+            })
+        })*/
     </script>
     <script>
         function drawChart() {
@@ -75,14 +96,18 @@
 
     <div>
         <a href="#" onclick="loadReports()">Загрузить данные</a>
+        <a href="#" onclick="saveReports()">Сохранить данные</a>
         <a href="#" onclick="drawChart()">Диаграмма</a>
         <div width="300" height="150">
             <canvas id="myChart"></canvas>
         </div>
 
         <div id="cities">
-            <ul data-bind="foreach: cities">
-                <li data-bind="text: $data"></li>
+            <ul data-bind="foreach: { data: cities, as: 'city'}">
+                <li>
+                    <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities.bind($parent) }" />
+                    <span data-bind="text: city.name" />
+                </li>
             </ul>
         </div>
 
@@ -100,28 +125,3 @@
     </div>
 </body>
 </html>
-<!--
-/*$.ajax( {
-                  url: 'https://aivanov:20lbf,tnjy15@sc-diabeton.ru/api/admin_orders/',
-                  type: 'POST',
-          dataType: 'jsonp',
-                  data: {
-                      'start-date': '08-05-2017',
-                      'finish_date':'26-09-2017'
-                  },
-          //beforeSend: function(request) {
-          //    request.setRequestHeader('Authorization', 'Basic YWl2YW5vdjoyMGxiZix0bmp5MTU=');
-          //},
-                  //headers : {
-                  //    'Authorization' : 'Basic YWl2YW5vdjoyMGxiZix0bmp5MTU='
-                  //},
-
-                  success:  function(json){
-                      //$('jsonOrders').append(json); },
-                      console.log(json);
-                  sander = json;},
-
-                  error: function (error) {
-                      console.log(error);
-                  }
-            })*/-->
