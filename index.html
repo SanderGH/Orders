@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
-<head> 
+<head>
     <script src="jquery-3.2.1.js"></script>
     <script src="lodash.js"></script>
     <script src="knockout-3.4.2.js"></script>
@@ -46,7 +46,7 @@
                 filtered_orders: ko.observableArray(_.filter(orders_closed, { 'city': '' })),
 
 
-         
+
                 changeCities: function () {
                     this.choose_cities(_.map(_.filter(this.cities(), 'visible'), 'name'));
 
@@ -59,11 +59,9 @@
                     items = _.map(this.filtered_orders(), 'items');
                     _.forEach(items, function (item) {
                         _.forEach(item, function (row) {
-                            console.log(typeof (row));
-                            if( map.has( row.code ) == false )
+                            if (map.has(row.code) == false)
                                 map.set(row.code, { 'name': row.name, 'quantity': Number(row.quantity), 'sum': Number(row.quantity) * Number(row.price) })
-                            else
-                            {
+                            else {
                                 ss = map.get(row.code);
                                 ss.quantity += Number(row.quantity);
                                 ss.sum += Number(row.quantity) * Number(row.price);
@@ -71,10 +69,8 @@
                         })
                     });
                     map.forEach(function (obj) {
-                        ViewModel.goods().push({ 'ad': 12 });
-                        console.log(obj);
-                    }
-                    );
+                        ViewModel.goods.push(obj);
+                    });
                 }
 
 
@@ -83,21 +79,37 @@
 
             ko.applyBindings(ViewModel);
 
-            
-       }
 
-   /*     _.transform(items, function (result, entry) {
-            console.log(entry);
-            qqq = _.map(entry);
-            console.log(qqq);
-            /*items.foreach(function (item, index, arr) {
-                var newObj = 
-                    {
-                        'code' : item.code
-                    }
-                    console.log(newObj);
-            })
-        })*/
+        }
+        /*_.map( ViewModel.filtered_orders(), function(order){ console.log(order.create_date);
+            var createDate = new Date(Number(order.create_date)*1000); console.log(createDate);console.log("" + createDate.getMonth() + " " + createDate.getFullYear());
+            order.create_date = "" + createDate.getMonth() + " " + createDate.getFullYear();
+            console.log(order);
+        })
+        
+        ddd = _.map( ViewModel.filtered_orders(), function(order){ console.log(order.create_date);
+        var createDate = new Date(Number(order.create_date)*1000); console.log(createDate);console.log("" + createDate.getMonth() + " " + createDate.getFullYear());
+        order.create_date = "" + createDate.getMonth() + " " + createDate.getFullYear();
+        console.log(order); return order;
+
+        _.groupBy(ddd, 'create_date')
+ })
+        
+        
+        */
+
+        /*     _.transform(items, function (result, entry) {
+                 console.log(entry);
+                 qqq = _.map(entry);
+                 console.log(qqq);
+                 /*items.foreach(function (item, index, arr) {
+                     var newObj =
+                         {
+                             'code' : item.code
+                         }
+                         console.log(newObj);
+                 })
+             })*/
     </script>
     <script>
         function drawChart() {
@@ -154,8 +166,12 @@
         <div id="orders_canceled"></div>
     </div>
     <table>
-        <tbody>
-            <tr data-bind="goods"></tr>
+        <tbody data-bind="foreach: goods">
+            <tr>
+                <td data-bind="text: name"></td>
+                <td data-bind="text: quantity"></td>
+                <td data-bind="text: sum"></td>
+            </tr>
         </tbody>
     </table>
 </body>
