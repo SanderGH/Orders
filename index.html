@@ -43,8 +43,18 @@
 
                 choose_cities: ko.observableArray(_.filter(cities, 'visible')),
 
-                filtered_orders: ko.observableArray(_.filter(orders_closed, { 'city': '' })),
+                //filtered_orders: ko.observableArray(_.filter(orders_closed, { 'city': '' })),
+                filtered_orders: ko.observableArray(_.map(orders_closed)),
 
+                group_orders: ko.observableArray(  _.map( _.groupBy( _.map(orders_closed, function(order) { 
+                        var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+
+                        var createDate = new Date(Number(order.create_date)*1000);
+                        order.create_date = "" + monthNames[createDate.getMonth()] + " " + createDate.getFullYear();
+                        return order;
+                    }), 'create_date'),
+                        function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
+                    )),
 
 
                 changeCities: function () {
@@ -117,21 +127,29 @@
             //ctx.height = 130;
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
-                type: 'bubble',
+                type: 'bar',
 
                 // The data for our dataset
                 data: {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    labels: _.map(ViewModel.group_orders(), 'month'),
                     datasets: [{
                         label: "My First dataset",
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
+                        //backgroundColor: 'rgb(255, 99, 132)',
+                        //borderColor: 'rgb(255, 99, 132)',
+                        data: _.map(ViewModel.group_orders(), 'sum')
                     }]
                 },
 
                 // Configuration options go here
-                options: {}
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
             });
         }
     </script>
