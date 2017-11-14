@@ -9,27 +9,14 @@
 <body>
     <script>
         // model
-        orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function( value, key, coll ) {
-            map = new Map();
-            //items = _.map(this.filtered_orders(), 'items');
-            _.forEach(value.items, function (item) {
-                    if (map.has(item.code) == false)
-                        map.set(item.code, { 'name': item.name, 'quantity': Number(item.quantity), 'sum': Number(item.quantity) * Number(item.price) })
-                    else {
-                        ss = map.get(item.code);
-                        ss.quantity += Number(item.quantity);
-                        ss.sum += Number(item.quantity) * Number(item.price);
-                    }
-            });
-            
-            newItems = [];
-            map.forEach( function(obj) {
-                 newItems.push(obj); 
-            });
-            
-            newOrder =  {
+        var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+
+        orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
+            var createDate = new Date( Number( value.create_date ) * 1000 );
+            return {
                 user_id: value.user_id,
                 create_date: value.create_date,
+                create_date_new: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
                 sum: value.sum,
                 delivery_sum: value.delivery_sum,
                 merchant: value.merchant,
@@ -41,34 +28,48 @@
                 cancel_reason: value.cancel_reason,
                 isnew_user: value.isnew_user,
                 orders_count: value.orders_count,
-                items: newItems
-                }
-            return newOrder;} );
+                items: _.map(value.items)
+            };
+        } );
 
         // create viewModel
         function OrdersViewModel()
         {
-            this.OrdersClosed = _.reject( orders, { status_name: "Отменен" } );
-            this.orders_canceled = _.filter( orders, { status_name: "Отменен" });           
+            var self = this;
+            self.orders_closed = ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
+            self.orders_canceled = ko.observableArray(_.filter( orders, { status_name: "Отменен" }));
+            self.brands = ko.observableArray( 
+                _.map( 
+                    _.uniq( 
+                        _.map( self.orders_closed(), 'brand_name') ),  
+                        function (entry){
+                            return { "name": entry, "visible": false };
+            })),
 
-            moscow_region = JSON.parse(localStorage.getItem("cities"));
+            self.cities = ko.observableArray( _.map( _.uniq( _.map( self.orders_closed(), 'city') ), function (entry) {
+                            return { "name": entry, "visible": true };
+                        }
+                    )
+                )
 
-            orders_closed = _.reject(orders, { status_name: "Отменен" });
-            orders_canceled = _.filter(orders, { status_name: "Отменен" });
+            self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_new'),
+                    function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
+                ));
 
+            /*moscow_region = JSON.parse(localStorage.getItem("cities"));
             moscow = _.filter(orders_closed, { city: 'Москва' });
-            moscow_sum = _.sumBy(moscow, function (obj) { return Number(obj.sum) });
+            moscow_sum = _.sumBy(moscow, function (obj) { return Number(obj.sum) });*/
 
-            ViewModel = {
-                brands: ko.observableArray(
+            //ViewModel = {
+                /*brands: ko.observableArray(
                     _.map(
                         _.uniq(_.map(orders_closed, 'brand_name')), function (entry) {
                             return { "name": entry, "visible": false };
                         }
                     )
-                ),
+                ),*/
 
-                cities: ko.observableArray(_.map(
+              /*  cities: ko.observableArray(_.map(
                         _.uniq(_.map(orders_closed, 'city')), function (entry) {
                             check = (moscow_region.indexOf(entry) != -1);
                             return { "name": entry, "visible": check };
@@ -83,18 +84,12 @@
                 //filtered_orders: ko.observableArray(_.filter(orders_closed, { 'city': '' })),
                 filtered_orders: ko.observableArray(_.map(orders_closed)),
 
-                group_orders: ko.observableArray(  _.map( _.groupBy( _.map(orders_closed, function(order) { 
-                        var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-
-                        var createDate = new Date(Number(order.create_date)*1000);
-                        order.create_date = "" + monthNames[createDate.getMonth()] + " " + createDate.getFullYear();
-                        return order;
-                    }), 'create_date'),
+                /*group_orders: ko.observableArray(  _.map( _.groupBy( self.orders_closed, 'create_date'),
                         function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
                     )),
 
 
-                changeCities: function () {
+             /*   changeCities: function () {
                     this.choose_cities(_.map(_.filter(this.cities(), 'visible'), 'name'));
 
                     var sss = this.choose_cities();
@@ -118,31 +113,14 @@
                     map.forEach(function (obj) {
                         ViewModel.goods.push(obj);
                     });
-                }
+                }*/
 
 
 
-            };             
+           // };             
         }
-
-        ko.applyBindings( new OrdersViewModel() );
-        /*_.map( ViewModel.filtered_orders(), function(order){ console.log(order.create_date);
-            var createDate = new Date(Number(order.create_date)*1000); console.log(createDate);console.log("" + createDate.getMonth() + " " + createDate.getFullYear());
-            order.create_date = "" + createDate.getMonth() + " " + createDate.getFullYear();
-            console.log(order);
-        })
-        
-        ddd = _.map( ViewModel.filtered_orders(), function(order){ console.log(order.create_date);
-        var createDate = new Date(Number(order.create_date)*1000); console.log(createDate);console.log("" + createDate.getMonth() + " " + createDate.getFullYear());
-        order.create_date = "" + createDate.getMonth() + " " + createDate.getFullYear();
-        console.log(order); return order;
-
-        _.groupBy(ddd, 'create_date')
- })
-        
-        
-        */
-
+        ViewModel  =  new OrdersViewModel();
+        ko.applyBindings( ViewModel );
         /*     _.transform(items, function (result, entry) {
                  console.log(entry);
                  qqq = _.map(entry);
