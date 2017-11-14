@@ -8,11 +8,48 @@
 </head>
 <body>
     <script>
-        function saveReports() {
-            //localStorage.setItem( "OrdersSC", JSON.stringify(filtered_orders()));
-        }
-        function loadReports() {
-            orders = JSON.parse(localStorage.getItem("OrdersSC"));
+        // model
+        orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function( value, key, coll ) {
+            map = new Map();
+            //items = _.map(this.filtered_orders(), 'items');
+            _.forEach(value.items, function (item) {
+                    if (map.has(item.code) == false)
+                        map.set(item.code, { 'name': item.name, 'quantity': Number(item.quantity), 'sum': Number(item.quantity) * Number(item.price) })
+                    else {
+                        ss = map.get(item.code);
+                        ss.quantity += Number(item.quantity);
+                        ss.sum += Number(item.quantity) * Number(item.price);
+                    }
+            });
+            
+            newItems = [];
+            map.forEach( function(obj) {
+                 newItems.push(obj); 
+            });
+            
+            newOrder =  {
+                user_id: value.user_id,
+                create_date: value.create_date,
+                sum: value.sum,
+                delivery_sum: value.delivery_sum,
+                merchant: value.merchant,
+                delivery: value.delivery,
+                transport: value.transport,
+                city: value.city,
+                coupon_code: value.coupon_code,
+                status_name: value.status_name,
+                cancel_reason: value.cancel_reason,
+                isnew_user: value.isnew_user,
+                orders_count: value.orders_count,
+                items: newItems
+                }
+            return newOrder;} );
+
+        // create viewModel
+        function OrdersViewModel()
+        {
+            this.OrdersClosed = _.reject( orders, { status_name: "Отменен" } );
+            this.orders_canceled = _.filter( orders, { status_name: "Отменен" });           
 
             moscow_region = JSON.parse(localStorage.getItem("cities"));
 
@@ -75,12 +112,10 @@
 
 
 
-            };
-
-            ko.applyBindings(ViewModel);
-
-
+            };             
         }
+
+        ko.applyBindings( new OrdersViewModel() );
         /*_.map( ViewModel.filtered_orders(), function(order){ console.log(order.create_date);
             var createDate = new Date(Number(order.create_date)*1000); console.log(createDate);console.log("" + createDate.getMonth() + " " + createDate.getFullYear());
             order.create_date = "" + createDate.getMonth() + " " + createDate.getFullYear();
@@ -138,7 +173,6 @@
 
     <div>
         <a href="#" onclick="loadReports()">Загрузить данные</a>
-        <a href="#" onclick="saveReports()">Сохранить данные</a>
         <a href="#" onclick="drawChart()">Диаграмма</a>
         <div width="300" height="150">
             <canvas id="myChart"></canvas>
