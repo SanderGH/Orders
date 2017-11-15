@@ -7,177 +7,18 @@
     <script src="Chart.js"></script>
 </head>
 <body>
-    <script>
-        // model
-        var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-
-        orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
-            var createDate = new Date( Number( value.create_date ) * 1000 );
-            return {
-                user_id: value.user_id,
-                create_date: value.create_date,
-                create_date_new: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
-                sum: value.sum,
-                delivery_sum: value.delivery_sum,
-                merchant: value.merchant,
-                delivery: value.delivery,
-                transport: value.transport,
-                city: value.city,
-                coupon_code: value.coupon_code,
-                status_name: value.status_name,
-                cancel_reason: value.cancel_reason,
-                isnew_user: value.isnew_user,
-                orders_count: value.orders_count,
-                items: _.map(value.items)
-            };
-        } );
-
-        // create viewModel
-        function OrdersViewModel()
-        {
-            var self = this;
-            self.orders_closed = ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
-            self.orders_canceled = ko.observableArray(_.filter( orders, { status_name: "Отменен" }));
-            self.brands = ko.observableArray( 
-                _.map( 
-                    _.uniq( 
-                        _.map( self.orders_closed(), 'brand_name') ),  
-                        function (entry){
-                            return { "name": entry, "visible": false };
-            })),
-
-            self.cities = ko.observableArray( _.map( _.uniq( _.map( self.orders_closed(), 'city') ), function (entry) {
-                            return { "name": entry, "visible": true };
-                        }
-                    )
-                )
-
-            self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_new'),
-                    function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
-                ));
-
-            /*moscow_region = JSON.parse(localStorage.getItem("cities"));
-            moscow = _.filter(orders_closed, { city: 'Москва' });
-            moscow_sum = _.sumBy(moscow, function (obj) { return Number(obj.sum) });*/
-
-            //ViewModel = {
-                /*brands: ko.observableArray(
-                    _.map(
-                        _.uniq(_.map(orders_closed, 'brand_name')), function (entry) {
-                            return { "name": entry, "visible": false };
-                        }
-                    )
-                ),*/
-
-              /*  cities: ko.observableArray(_.map(
-                        _.uniq(_.map(orders_closed, 'city')), function (entry) {
-                            check = (moscow_region.indexOf(entry) != -1);
-                            return { "name": entry, "visible": check };
-                        }
-                    )
-                ),
-
-                goods: ko.observableArray(),
-
-                choose_cities: ko.observableArray(_.filter(cities, 'visible')),
-
-                //filtered_orders: ko.observableArray(_.filter(orders_closed, { 'city': '' })),
-                filtered_orders: ko.observableArray(_.map(orders_closed)),
-
-                /*group_orders: ko.observableArray(  _.map( _.groupBy( self.orders_closed, 'create_date'),
-                        function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
-                    )),
-
-
-             /*   changeCities: function () {
-                    this.choose_cities(_.map(_.filter(this.cities(), 'visible'), 'name'));
-
-                    var sss = this.choose_cities();
-                    this.filtered_orders(_.filter(orders_closed, function (entry) {
-                        return sss.indexOf(entry.city) != -1
-                    }));
-
-                    map = new Map();
-                    items = _.map(this.filtered_orders(), 'items');
-                    _.forEach(items, function (item) {
-                        _.forEach(item, function (row) {
-                            if (map.has(row.code) == false)
-                                map.set(row.code, { 'name': row.name, 'quantity': Number(row.quantity), 'sum': Number(row.quantity) * Number(row.price) })
-                            else {
-                                ss = map.get(row.code);
-                                ss.quantity += Number(row.quantity);
-                                ss.sum += Number(row.quantity) * Number(row.price);
-                            }
-                        })
-                    });
-                    map.forEach(function (obj) {
-                        ViewModel.goods.push(obj);
-                    });
-                }*/
-
-
-
-           // };             
-        }
-        ViewModel  =  new OrdersViewModel();
-        ko.applyBindings( ViewModel );
-        /*     _.transform(items, function (result, entry) {
-                 console.log(entry);
-                 qqq = _.map(entry);
-                 console.log(qqq);
-                 /*items.foreach(function (item, index, arr) {
-                     var newObj =
-                         {
-                             'code' : item.code
-                         }
-                         console.log(newObj);
-                 })
-             })*/
-    </script>
-    <script>
-        function drawChart() {
-            var ctx = document.getElementById('myChart');
-            //ctx.height = 130;
-            var chart = new Chart(ctx, {
-                // The type of chart we want to create
-                type: 'bar',
-
-                // The data for our dataset
-                data: {
-                    labels: _.map(ViewModel.group_orders(), 'month'),
-                    datasets: [{
-                        label: "My First dataset",
-                        //backgroundColor: 'rgb(255, 99, 132)',
-                        //borderColor: 'rgb(255, 99, 132)',
-                        data: _.map(ViewModel.group_orders(), 'sum')
-                    }]
-                },
-
-                // Configuration options go here
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
-                }
-            });
-        }
-    </script>
-
     <div>
         <a href="#" onclick="loadReports()">Загрузить данные</a>
         <a href="#" onclick="drawChart()">Диаграмма</a>
         <div width="300" height="150">
-            <canvas id="myChart"></canvas>
+            <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.group_orders"></canvas>
         </div>
 
         <div id="cities">
             <ul data-bind="foreach: { data: cities, as: 'city'}">
                 <li>
-                    <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities.bind($parent) }" />
+                    <!-- <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities.bind($parent) }" /> -->
+                    <input type="checkbox" data-bind="checked: city.visible" />
                     <span data-bind="text: city.name" />
                 </li>
             </ul>
@@ -204,5 +45,238 @@
             </tr>
         </tbody>
     </table>
+    <script>
+
+            // model
+            var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+    
+            orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
+                var createDate = new Date( Number( value.create_date ) * 1000 );
+                return {
+                    user_id: value.user_id,
+                    create_date: value.create_date,
+                    create_date_month: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
+                    create_date_day: (createDate.getDay()+1) + " " + monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
+                    sum: value.sum,
+                    delivery_sum: value.delivery_sum,
+                    merchant: value.merchant,
+                    delivery: value.delivery,
+                    transport: value.transport,
+                    city: value.city,
+                    coupon_code: value.coupon_code,
+                    status_name: value.status_name,
+                    cancel_reason: value.cancel_reason,
+                    isnew_user: value.isnew_user,
+                    orders_count: value.orders_count,
+                    items: _.map(value.items)
+                };
+            } );
+    
+            // create custom binding for chart
+            ko.bindingHandlers.chartBind = {
+                init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                    var data = ko.unwrap(valueAccessor());
+
+                    var ctx = document.getElementById('myChart');
+                //ctx.height = 100;
+                //ctx.width = 100;
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+    
+                    // The data for our dataset
+                    data: {
+                        labels: _.map(data, 'month'),
+                        datasets: [{
+                            label: "My First dataset",
+                            //backgroundColor: 'rgb(255, 99, 132)',
+                            //borderColor: 'rgb(255, 99, 132)',
+                            data: _.map(data, 'sum')
+                        }]
+                    },
+    
+                    // Configuration options go here
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
+                });
+/*
+                var ctx = document.getElementById('myChart');
+                //ctx.height = 130;
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+    
+                    // The data for our dataset
+                    data: {
+                        labels: _.map(ViewModel.group_orders(), 'month'),
+                        datasets: [{
+                            label: "My First dataset",
+                            //backgroundColor: 'rgb(255, 99, 132)',
+                            //borderColor: 'rgb(255, 99, 132)',
+                            data: _.map(ViewModel.group_orders(), 'sum')
+                        }]
+                    },
+    
+                    // Configuration options go here
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+*/                    
+                    console.log("Hi from init");
+                },
+                update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                    var data = ko.unwrap(valueAccessor());
+                    console.log("Hi from update");
+                }                        
+            }
+            // create viewModel
+            function OrdersViewModel()
+            {
+                var self = this;
+                self.orders_closed = ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
+                self.orders_canceled = ko.observableArray(_.filter( orders, { status_name: "Отменен" }));
+                self.brands = ko.observableArray( 
+                    _.map( 
+                        _.uniq( 
+                            _.map( self.orders_closed(), 'brand_name') ),  
+                            function (entry){
+                                return { "name": entry, "visible": false };
+                })),
+    
+                self.cities = ko.observableArray( _.map( _.uniq( _.map( self.orders_closed(), 'city') ), function (entry) {
+                                return { "name": entry, "visible": true };
+                            }
+                        )
+                    )
+    
+                self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_month'),
+                        function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
+                ));
+    
+                /*moscow_region = JSON.parse(localStorage.getItem("cities"));
+                moscow = _.filter(orders_closed, { city: 'Москва' });
+                moscow_sum = _.sumBy(moscow, function (obj) { return Number(obj.sum) });*/
+    
+                //ViewModel = {
+                    /*brands: ko.observableArray(
+                        _.map(
+                            _.uniq(_.map(orders_closed, 'brand_name')), function (entry) {
+                                return { "name": entry, "visible": false };
+                            }
+                        )
+                    ),*/
+    
+                  /*  cities: ko.observableArray(_.map(
+                            _.uniq(_.map(orders_closed, 'city')), function (entry) {
+                                check = (moscow_region.indexOf(entry) != -1);
+                                return { "name": entry, "visible": check };
+                            }
+                        )
+                    ),
+    
+                    goods: ko.observableArray(),
+    
+                    choose_cities: ko.observableArray(_.filter(cities, 'visible')),
+    
+                    //filtered_orders: ko.observableArray(_.filter(orders_closed, { 'city': '' })),
+                    filtered_orders: ko.observableArray(_.map(orders_closed)),
+    
+                    /*group_orders: ko.observableArray(  _.map( _.groupBy( self.orders_closed, 'create_date'),
+                            function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
+                        )),
+    
+    
+                 /*   changeCities: function () {
+                        this.choose_cities(_.map(_.filter(this.cities(), 'visible'), 'name'));
+    
+                        var sss = this.choose_cities();
+                        this.filtered_orders(_.filter(orders_closed, function (entry) {
+                            return sss.indexOf(entry.city) != -1
+                        }));
+    
+                        map = new Map();
+                        items = _.map(this.filtered_orders(), 'items');
+                        _.forEach(items, function (item) {
+                            _.forEach(item, function (row) {
+                                if (map.has(row.code) == false)
+                                    map.set(row.code, { 'name': row.name, 'quantity': Number(row.quantity), 'sum': Number(row.quantity) * Number(row.price) })
+                                else {
+                                    ss = map.get(row.code);
+                                    ss.quantity += Number(row.quantity);
+                                    ss.sum += Number(row.quantity) * Number(row.price);
+                                }
+                            })
+                        });
+                        map.forEach(function (obj) {
+                            ViewModel.goods.push(obj);
+                        });
+                    }*/
+    
+    
+    
+               // };             
+            }
+            ko.applyBindings( new OrdersViewModel() );
+            /*     _.transform(items, function (result, entry) {
+                     console.log(entry);
+                     qqq = _.map(entry);
+                     console.log(qqq);
+                     /*items.foreach(function (item, index, arr) {
+                         var newObj =
+                             {
+                                 'code' : item.code
+                             }
+                             console.log(newObj);
+                     })
+                 })*/
+        </script>
+        <script>
+            function drawChart() {
+                var ctx = document.getElementById('myChart');
+                //ctx.height = 130;
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+    
+                    // The data for our dataset
+                    data: {
+                        labels: _.map(ViewModel.group_orders(), 'month'),
+                        datasets: [{
+                            label: "My First dataset",
+                            //backgroundColor: 'rgb(255, 99, 132)',
+                            //borderColor: 'rgb(255, 99, 132)',
+                            data: _.map(ViewModel.group_orders(), 'sum')
+                        }]
+                    },
+    
+                    // Configuration options go here
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        </script>
+        
 </body>
 </html>
