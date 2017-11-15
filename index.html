@@ -8,8 +8,8 @@
 </head>
 <body>
     <div>
-        <a href="#" onclick="loadReports()">Загрузить данные</a>
-        <a href="#" onclick="drawChart()">Диаграмма</a>
+        <input type="checkbox" data-bind="checked: $data.viewCount, click: changeViewCount">Показать количество</input>
+        <select data-bind="options: $data.detailTypes, optionsText: 'name', optionsValue: 'id', value: selectedDetailType, event: {change:changeDetailType}"></select>
         <div width="300" height="150">
             <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.group_orders"></canvas>
         </div>
@@ -46,7 +46,6 @@
         </tbody>
     </table>
     <script>
-
             // model
             var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
     
@@ -56,7 +55,7 @@
                     user_id: value.user_id,
                     create_date: value.create_date,
                     create_date_month: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
-                    create_date_day: (createDate.getDay()+1) + " " + monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
+                    create_date_day: (createDate.getDate()+1) + " " + monthNames[createDate.getMonth()],// + " " + createDate.getFullYear(),
                     sum: value.sum,
                     delivery_sum: value.delivery_sum,
                     merchant: value.merchant,
@@ -78,70 +77,90 @@
                     var data = ko.unwrap(valueAccessor());
 
                     var ctx = document.getElementById('myChart');
-                //ctx.height = 100;
-                //ctx.width = 100;
-                var chart = new Chart(ctx, {
-                    // The type of chart we want to create
-                    type: 'bar',
-    
-                    // The data for our dataset
-                    data: {
-                        labels: _.map(data, 'month'),
-                        datasets: [{
-                            label: "My First dataset",
-                            //backgroundColor: 'rgb(255, 99, 132)',
-                            //borderColor: 'rgb(255, 99, 132)',
-                            data: _.map(data, 'sum')
-                        }]
-                    },
-    
-                    // Configuration options go here
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
+                    var chart = new Chart( ctx, {
+                        type: 'line',
+        
+                        // The data for our dataset
+                        data: {
+                            labels: _.map(data, 'month'),
+                            datasets: [{
+                                label: "Сумма",
+                                data: _.map(data, 'sum'),
+                                borderColor: "#ff0000",
+                                borderWidth: 1,                              
+                                //backgroundColor: "#ff0000",
+                                yAxisID: "y-axis-sum"
+                            }, {
+                                label: "Количество",
+                                data: _.map(data, 'count'),
+                                borderColor: "#0000ff",
+                                borderWidth: 1,                              
+                               // backgroundColor: "#0000ff",
+                                yAxisID: "y-axis-count"
+                            }],
+                        },
+        
+                        // Configuration options go here
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    },
+                                    position: "left",
+                                    id: "y-axis-sum",
+                                },{
+                                    position: "right",
+                                    id: "y-axis-count",
+                                }]
+                            }
                         }
-                    }
-                });
-/*
-                var ctx = document.getElementById('myChart');
-                //ctx.height = 130;
-                var chart = new Chart(ctx, {
-                    // The type of chart we want to create
-                    type: 'bar',
-    
-                    // The data for our dataset
-                    data: {
-                        labels: _.map(ViewModel.group_orders(), 'month'),
-                        datasets: [{
-                            label: "My First dataset",
-                            //backgroundColor: 'rgb(255, 99, 132)',
-                            //borderColor: 'rgb(255, 99, 132)',
-                            data: _.map(ViewModel.group_orders(), 'sum')
-                        }]
-                    },
-    
-                    // Configuration options go here
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
-                        }
-                    }
-                });
-
-*/                    
-                    console.log("Hi from init");
+                    });
                 },
                 update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
                     var data = ko.unwrap(valueAccessor());
-                    console.log("Hi from update");
+
+                    var ctx = document.getElementById('myChart');
+                    var chart = new Chart( ctx, {
+                        type: 'line',
+        
+                        // The data for our dataset
+                        data: {
+                            labels: _.map(data, 'month'),
+                            datasets: [{
+                                label: "Сумма",
+                                data: _.map(data, 'sum'),
+                                borderColor: "#ff0000",
+                                borderWidth: 1,                              
+                                //backgroundColor: "#ff0000",
+                                yAxisID: "y-axis-sum"
+                            }, {
+                                label: "Количество",
+                                data: _.map(data, 'count'),
+                                borderColor: "#0000ff",
+                                borderWidth: 1,                              
+                               // backgroundColor: "#0000ff",
+                                yAxisID: "y-axis-count"
+                            }],
+                        },
+        
+                        // Configuration options go here
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    },
+                                    position: "left",
+                                    id: "y-axis-sum",
+                                },{
+                                    position: "right",
+                                    id: "y-axis-count",
+                                }]
+                            }
+                        }
+                    });
+                    
                 }                        
             }
             // create viewModel
@@ -150,6 +169,23 @@
                 var self = this;
                 self.orders_closed = ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
                 self.orders_canceled = ko.observableArray(_.filter( orders, { status_name: "Отменен" }));
+                
+                self.viewCount = ko.observable(true);
+                self.changeViewCount = function(){
+                    console.log(self.viewCount);
+                    //self.group_orders.push({'month' : "key", 'count' : "value.length", 'sum' :"asaa"});
+                }
+                
+                self.detailTypes = ko.observableArray( [{ 'id': 0, 'name': "Детализация по дням"}, { 'id': 1, 'name': "Детализация по месяцам"}]);
+                self.selectedDetailType = ko.observable();                
+                self.changeDetailType = function(){
+                    self.group_orders( _.map( _.groupBy( self.orders_closed(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ),
+                        function(value, key){ 
+                            return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) 
+                        };}
+                    ))
+                }
+                
                 self.brands = ko.observableArray( 
                     _.map( 
                         _.uniq( 
@@ -164,7 +200,7 @@
                         )
                     )
     
-                self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_month'),
+                self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_day'),
                         function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
                 ));
     
@@ -231,7 +267,8 @@
     
                // };             
             }
-            ko.applyBindings( new OrdersViewModel() );
+            ViewModel = new OrdersViewModel();
+            ko.applyBindings( ViewModel );
             /*     _.transform(items, function (result, entry) {
                      console.log(entry);
                      qqq = _.map(entry);
@@ -245,38 +282,5 @@
                      })
                  })*/
         </script>
-        <script>
-            function drawChart() {
-                var ctx = document.getElementById('myChart');
-                //ctx.height = 130;
-                var chart = new Chart(ctx, {
-                    // The type of chart we want to create
-                    type: 'bar',
-    
-                    // The data for our dataset
-                    data: {
-                        labels: _.map(ViewModel.group_orders(), 'month'),
-                        datasets: [{
-                            label: "My First dataset",
-                            //backgroundColor: 'rgb(255, 99, 132)',
-                            //borderColor: 'rgb(255, 99, 132)',
-                            data: _.map(ViewModel.group_orders(), 'sum')
-                        }]
-                    },
-    
-                    // Configuration options go here
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
-                        }
-                    }
-                });
-            }
-        </script>
-        
 </body>
 </html>
