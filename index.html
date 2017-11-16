@@ -3,7 +3,7 @@
 <head>
     <script src="jquery-3.2.1.js"></script>
     <script src="lodash.js"></script>
-    <script src="knockout-3.4.2.js"></script>
+    <script src="knockout-3.4.2.debug.js"></script>
     <script src="Chart.js"></script>
 </head>
 <body>
@@ -77,25 +77,20 @@
                     var data = ko.unwrap(valueAccessor());
 
                     var ctx = document.getElementById('myChart');
-                    var chart = new Chart( ctx, {
-                        type: 'line',
+                    chart = new Chart( ctx, {
+                        type: 'bar',
         
                         // The data for our dataset
                         data: {
-                            labels: _.map(data, 'month'),
                             datasets: [{
                                 label: "Сумма",
-                                data: _.map(data, 'sum'),
                                 borderColor: "#ff0000",
                                 borderWidth: 1,                              
-                                //backgroundColor: "#ff0000",
                                 yAxisID: "y-axis-sum"
                             }, {
                                 label: "Количество",
-                                data: _.map(data, 'count'),
                                 borderColor: "#0000ff",
                                 borderWidth: 1,                              
-                               // backgroundColor: "#0000ff",
                                 yAxisID: "y-axis-count"
                             }],
                         },
@@ -118,49 +113,36 @@
                     });
                 },
                 update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-                    var data = ko.unwrap(valueAccessor());
+                    var data = ko.unwrap( valueAccessor() );
+                    chart.data.labels = _.map(data, 'period');
+                    chart.data.datasets[0].data = _.map(data, 'sum');
+                    chart.data.datasets[1].data = _.map(data, 'count');               
+                    chart.data.datasets[1].hidden = !viewModel.viewCount();
+                    chart.options.scales.yAxes[1].display = viewModel.viewCount();
+                  /*  if( chart.data.datasets.length == 0 ){
+                        chart.data.labels = _.map(data, 'month');
+                        chart.data.datasets.push( {
+                                    label: "Сумма",
+                                    data: _.map(data, 'sum'),
+                                    borderColor: "#ff0000",
+                                    borderWidth: 1,                              
+                                    //backgroundColor: "#ff0000",
+                                    yAxisID: "y-axis-sum"
+                        });
+                    }
 
-                    var ctx = document.getElementById('myChart');
-                    var chart = new Chart( ctx, {
-                        type: 'line',
-        
-                        // The data for our dataset
-                        data: {
-                            labels: _.map(data, 'month'),
-                            datasets: [{
-                                label: "Сумма",
-                                data: _.map(data, 'sum'),
-                                borderColor: "#ff0000",
-                                borderWidth: 1,                              
-                                //backgroundColor: "#ff0000",
-                                yAxisID: "y-axis-sum"
-                            }, {
+                    if( viewModel.viewCount() )
+                        chart.data.datasets.push( {
                                 label: "Количество",
                                 data: _.map(data, 'count'),
                                 borderColor: "#0000ff",
                                 borderWidth: 1,                              
-                               // backgroundColor: "#0000ff",
                                 yAxisID: "y-axis-count"
-                            }],
-                        },
-        
-                        // Configuration options go here
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true
-                                    },
-                                    position: "left",
-                                    id: "y-axis-sum",
-                                },{
-                                    position: "right",
-                                    id: "y-axis-count",
-                                }]
-                            }
-                        }
-                    });
-                    
+                            });
+                    else
+                        chart.data.datasets.pop( );*/
+
+                    chart.update();
                 }                        
             }
             // create viewModel
@@ -172,8 +154,7 @@
                 
                 self.viewCount = ko.observable(true);
                 self.changeViewCount = function(){
-                    console.log(self.viewCount);
-                    //self.group_orders.push({'month' : "key", 'count' : "value.length", 'sum' :"asaa"});
+                    self.group_orders.valueHasMutated();
                 }
                 
                 self.detailTypes = ko.observableArray( [{ 'id': 0, 'name': "Детализация по дням"}, { 'id': 1, 'name': "Детализация по месяцам"}]);
@@ -181,7 +162,7 @@
                 self.changeDetailType = function(){
                     self.group_orders( _.map( _.groupBy( self.orders_closed(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ),
                         function(value, key){ 
-                            return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) 
+                            return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) 
                         };}
                     ))
                 }
@@ -201,7 +182,7 @@
                     )
     
                 self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_day'),
-                        function(value, key){ return { 'month' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
+                        function(value, key){ return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
                 ));
     
                 /*moscow_region = JSON.parse(localStorage.getItem("cities"));
