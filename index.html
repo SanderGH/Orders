@@ -8,23 +8,23 @@
 </head>
 <body>
     <div>
-        <input type="checkbox" data-bind="checked: $data.viewCount, click: changeViewCount">Показать количество</input>
+        <input type="checkbox" data-bind="checked: $data.viewCount, event: {change:changeViewCount}">Показать количество</input>
         <select data-bind="options: $data.detailTypes, optionsText: 'name', optionsValue: 'id', value: selectedDetailType, event: {change:changeDetailType}"></select>
-        <div width="300" height="150">
-            <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.group_orders"></canvas>
-        </div>
+        <input type="radio" name="typeChart" value="line" data-bind="checked: $data.typeChart, event: {change:changeTypeChart}">Line</input>
+        <input type="radio" name="typeChart" value="bar" data-bind="checked: $data.typeChart, event: {change:changeTypeChart}">Bar</input>
+        <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.group_orders"></canvas>
 
-        <div id="cities">
+        <!--<div id="cities">
             <ul data-bind="foreach: { data: cities, as: 'city'}">
                 <li>
-                    <!-- <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities.bind($parent) }" /> -->
+                    <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities.bind($parent) }" />
                     <input type="checkbox" data-bind="checked: city.visible" />
                     <span data-bind="text: city.name" />
                 </li>
             </ul>
-        </div>
+        </div>-->
 
-        <div id="brands">
+        <!--<div id="brands">
             <ul data-bind="foreach: { data: brands, as: 'brand'}">
                 <li>
                     <input type="checkbox" data-bind="checked: brand.visible" />
@@ -32,9 +32,6 @@
                 </li>
             </ul>
         </div>
-
-        <div id="orders_closed"></div>
-        <div id="orders_canceled"></div>
     </div>
     <table>
         <tbody data-bind="foreach: goods">
@@ -44,7 +41,7 @@
                 <td data-bind="text: sum"></td>
             </tr>
         </tbody>
-    </table>
+    </table> -->
     <script>
             // model
             var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
@@ -55,7 +52,7 @@
                     user_id: value.user_id,
                     create_date: value.create_date,
                     create_date_month: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
-                    create_date_day: (createDate.getDate()+1) + " " + monthNames[createDate.getMonth()],// + " " + createDate.getFullYear(),
+                    create_date_day: (createDate.getDate()) + " " + monthNames[createDate.getMonth()],// + " " + createDate.getFullYear(),
                     sum: value.sum,
                     delivery_sum: value.delivery_sum,
                     merchant: value.merchant,
@@ -119,29 +116,6 @@
                     chart.data.datasets[1].data = _.map(data, 'count');               
                     chart.data.datasets[1].hidden = !viewModel.viewCount();
                     chart.options.scales.yAxes[1].display = viewModel.viewCount();
-                  /*  if( chart.data.datasets.length == 0 ){
-                        chart.data.labels = _.map(data, 'month');
-                        chart.data.datasets.push( {
-                                    label: "Сумма",
-                                    data: _.map(data, 'sum'),
-                                    borderColor: "#ff0000",
-                                    borderWidth: 1,                              
-                                    //backgroundColor: "#ff0000",
-                                    yAxisID: "y-axis-sum"
-                        });
-                    }
-
-                    if( viewModel.viewCount() )
-                        chart.data.datasets.push( {
-                                label: "Количество",
-                                data: _.map(data, 'count'),
-                                borderColor: "#0000ff",
-                                borderWidth: 1,                              
-                                yAxisID: "y-axis-count"
-                            });
-                    else
-                        chart.data.datasets.pop( );*/
-
                     chart.update();
                 }                        
             }
@@ -158,6 +132,13 @@
                 }
                 
                 self.detailTypes = ko.observableArray( [{ 'id': 0, 'name': "Детализация по дням"}, { 'id': 1, 'name': "Детализация по месяцам"}]);
+                
+                self.typeChart = ko.observable( "bar" );
+                self.changeTypeChart = function(){
+                    chart.config.type = self.typeChart();
+                    chart.update(); 
+                }
+
                 self.selectedDetailType = ko.observable();                
                 self.changeDetailType = function(){
                     self.group_orders( _.map( _.groupBy( self.orders_closed(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ),
@@ -181,6 +162,9 @@
                         )
                     )
     
+                sss= _.groupBy( orders, 'create_date_month')
+                _.forEach( sss, function(value,key,col) { col[key] =_.groupBy(value, 'status_name')})
+
                 self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.orders_closed(), 'create_date_day'),
                         function(value, key){ return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, function(o){return Number(o.sum)}) };}
                 ));
@@ -262,6 +246,31 @@
                              console.log(newObj);
                      })
                  })*/
+                                   /*  if( chart.data.datasets.length == 0 ){
+                        chart.data.labels = _.map(data, 'month');
+                        chart.data.datasets.push( {
+                                    label: "Сумма",
+                                    data: _.map(data, 'sum'),
+                                    borderColor: "#ff0000",
+                                    borderWidth: 1,                              
+                                    //backgroundColor: "#ff0000",
+                                    yAxisID: "y-axis-sum"
+                        });
+                    }
+
+                    if( viewModel.viewCount() )
+                        chart.data.datasets.push( {
+                                label: "Количество",
+                                data: _.map(data, 'count'),
+                                borderColor: "#0000ff",
+                                borderWidth: 1,                              
+                                yAxisID: "y-axis-count"
+                            });
+                    else
+                        chart.data.datasets.pop( );*/
+
+
         </script>
 </body>
 </html>
+
