@@ -8,14 +8,41 @@
 </head>
 <body>
     <div>
+        <h1>Выполненные заказы</h1>
         <input type="checkbox" data-bind="checked: $data.viewCount, event: {change:changeViewCount}">Показать количество</input>
         <input type="checkbox" data-bind="checked: $data.viewCanceled, event: {change:changeViewCanceled}">Показать отмененные</input>        
         <select data-bind="options: $data.detailTypes, optionsText: 'name', optionsValue: 'id', value: selectedDetailType, event: {change:changeDetailType}"></select>
         <input type="radio" name="typeChart" value="line" data-bind="checked: $data.typeChart, event: {change:changeTypeChart}">Line</input>
         <input type="radio" name="typeChart" value="bar" data-bind="checked: $data.typeChart, event: {change:changeTypeChart}">Bar</input>
         <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.group_orders"></canvas>
+        <h1>Отмененные заказы</h1>
+        <canvas width="1300" height="400" id="cancelOrderChart" data-bind="cancelOrderChartBind: $data.cancel_group_orders"></canvas>
         
+        <table>
+                <tbody data-bind="foreach: cancelReasons">
+                    <tr>
+                        <td data-bind="text: name"></td>
+                        <td data-bind="text: count"></td>
+                    </tr>
+        </tbody>
+      <!--  <ul data-bind="foreach: { data: $data.cities, as: 'city'}">
+            <li>
+                <input type="checkbox" data-bind="checked: city.visible, click : $parent.changeCities" />
+                <span data-bind="text: city.name" />
+            </li>
+        </ul>
+
+        <table>
+            <tbody data-bind="foreach: goods">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: quantity"></td>
+                    <td data-bind="text: sum"></td>
+                </tr>
+        </tbody> -->
+
        <script>
+           //, event: { change : changeCities }
             // model
             var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
     
@@ -41,6 +68,56 @@
                 };
             } );
     
+            // create custom binding for chart
+            ko.bindingHandlers.cancelOrderChartBind = {
+                init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                    var data = ko.unwrap(valueAccessor());
+
+                    var ctx = document.getElementById('cancelOrderChart');
+                    chartCancel = new Chart( ctx, {
+                        type: 'bar',
+        
+                        // The data for our dataset
+                        data: {
+                            datasets: [
+                            {
+                                label: "Количество",
+                                borderColor: "#36A2EB",
+                                backgroundColor:"#36A2EB",
+                                borderWidth: 1,                              
+                                //yAxisID: "y-axis-count"
+                            }]
+                        },
+        
+                        // Configuration options go here
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    stacked: true,
+                                }]
+                                /*yAxes: [ {
+                                    ticks: {
+                                        beginAtZero:true
+                                    },
+                                    position: "left",
+                                    id: "y-axis-sum",
+                                },{
+                                    position: "right",
+                                    id: "y-axis-count",
+                                    stacked: true
+                                }]*/
+                            }
+                        }
+                    });
+                },
+                update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                    var data = ko.unwrap( valueAccessor() );
+                    chartCancel.data.labels = _.map(data, 'period');
+                    chartCancel.data.datasets[0].data = _.map(data, 'count');
+                    chartCancel.update();
+                }                        
+            }
+
             // create custom binding for chart
             ko.bindingHandlers.chartBind = {
                 init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -137,7 +214,18 @@
                 self.sumCancelOrders = ko.computed( function(){
                     return _.sumBy(self.cancelOrders(), 'sum');
                 })          
-   
+                self.cancelReasons = ko.observableArray( 
+                    _.reverse(
+                        _.sortBy( 
+                            _.map( 
+                                _.groupBy( self.cancelOrders(), 'cancel_reason' ), function(value, key) {
+                                    return { 'name' : key, 'count' : value.length }
+                                    }
+                                )
+                        ,'count')
+                    )
+                )
+
                 self.viewCanceled = ko.observable(true);
                 self.changeViewCanceled = function(){
                     self.group_orders.valueHasMutated();
@@ -163,11 +251,23 @@
                         }
                     ));
 
-                    self.cancel_group_orders( _.map( _.groupBy( self.cancelOrders(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ),
-                        function(value, key){  
-                            return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, 'sum')};
-                        }
-                    ));
+                    /*self.cancel_group_orders( 
+                        _.map( 
+                            _.groupBy( self.cancelOrders(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ), function(value, key){  
+                                return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, 'sum')};
+                            }
+                    ));*/
+
+                    self.cancel_group_orders( 
+                        _.forEach( _.groupBy( self.cancelOrders(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ), function(value,key,col) {
+                            col[key] =_.groupBy(value, 'cancel_reason');
+                        } ))
+
+                    //    _.map( 
+                    //        _.groupBy( self.cancelOrders(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ), function(value, key){  
+                    //            return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, 'sum')};
+                    //        }
+                    //));
 
                     // сгрупировать по периоду
                     /*groups =  _.groupBy( orders, self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' );
@@ -205,12 +305,51 @@
                                 return { "name": entry, "visible": false };
                 })),
     
-                /*self.cities = ko.observableArray( _.map( _.uniq( _.map( self.completeOrders(), 'city') ), function (entry) {
-                                return { "name": entry, "visible": true };
+
+                /*moscow_region = ["Нижний Новгород", "Саров", "Дзержинск"];
+                self.cities = ko.observableArray(_.map(
+                            _.uniq(_.map(self.completeOrders(), 'city')), function (entry) {
+                                check = (moscow_region.indexOf(entry) != -1);
+                                return { "name": entry, "visible": check };
                             }
                         )
                     )
-                */
+                /*self.cities = ko.observableArray( _.map( _.uniq( _.map( self.completeOrders(), 'city') ), function (entry) {
+                                return { "name": entry, "visible": false };
+                            }
+                        )
+                    );*/
+                
+               /* self.filtered_orders = ko.observableArray(_.map(self.completeOrders()));
+                self.goods = ko.observableArray();
+                self.choose_cities = ko.observableArray(_.filter(self.cities(), 'visible')),                
+                self.changeCities =  function () {
+                        self.choose_cities(_.map(_.filter(self.cities(), 'visible'), 'name'));
+    
+                        var sss = self.choose_cities();
+                        self.filtered_orders(_.filter(self.completeOrders(), function (entry) {
+                            return sss.indexOf(entry.city) != -1
+                        }));
+    
+                        map = new Map();
+                        items = _.map(self.filtered_orders(), 'items');
+                        _.forEach(items, function (item) {
+                            _.forEach(item, function (row) {
+                                if (map.has(row.code) == false)
+                                    map.set(row.code, { 'name': row.name, 'quantity': Number(row.quantity), 'sum': Number(row.quantity) * Number(row.price) })
+                                else {
+                                    ss = map.get(row.code);
+                                    ss.quantity += Number(row.quantity);
+                                    ss.sum += Number(row.quantity) * Number(row.price);
+                                }
+                            })
+                        });
+                        map.forEach(function (obj) {
+                            ViewModel.goods.push(obj);
+                        });
+                    }
+
+*/
                 //sss= _.groupBy( orders, 'create_date_month')
                 //_.forEach( sss, function(value,key,col) { col[key] =_.groupBy(value, 'status_name')})
 
