@@ -18,16 +18,16 @@
         <h1>Отмененные заказы</h1>
         <canvas width="1300" height="400" id="cancelOrderChart" data-bind="cancelOrderChartBind: $data.cancel_group_orders"></canvas>
         
-        <table>
+      <!--  <table>
                 <tbody data-bind="foreach: cancelReasons">
                     <tr>
                         <td data-bind="text: name"></td>
                         <td data-bind="text: count"></td>
                     </tr>
         </tbody>
-      <!--  <ul data-bind="foreach: { data: $data.cities, as: 'city'}">
+       <ul data-bind="foreach: { data: $data.cities, as: 'city'}">
             <li>
-                <input type="checkbox" data-bind="checked: city.visible, click : $parent.changeCities" />
+                <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities }" />
                 <span data-bind="text: city.name" />
             </li>
         </ul>
@@ -39,34 +39,61 @@
                     <td data-bind="text: quantity"></td>
                     <td data-bind="text: sum"></td>
                 </tr>
-        </tbody> -->
+        </tbody>-->
+
+        <div data-bind="foreach: { data: $data.Sander1, as: 'good' }">
+            <h3 data-bind="text: name"></h3>
+            <table>
+                <tbody data-bind="foreach: { data: $data.cities, as: 'city' }">
+                    <tr>
+                        <td style="width: 400px" data-bind="text: city.name"></td>
+                        <td data-bind="text: city.quantity"></td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div> 
+
+        <!--<table>
+            <tbody data-bind="foreach: { data: $data.goodsMedtronic, as: 'good' }">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: quantity"></td>
+                </tr>
+        </tbody>-->
+        
+        
 
        <script>
            //, event: { change : changeCities }
             // model
             var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-    
-            orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
-                var createDate = new Date( Number( value.create_date ) * 1000 );
-                return {
-                    user_id: value.user_id,
-                    create_date: value.create_date,
-                    create_date_month: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
-                    create_date_day: (createDate.getDate()) + " " + monthNames[createDate.getMonth()],// + " " + createDate.getFullYear(),
-                    sum: Number(value.sum),
-                    delivery_sum: Number(value.delivery_sum),
-                    merchant: value.merchant,
-                    delivery: value.delivery,
-                    transport: value.transport,
-                    city: value.city,
-                    coupon_code: value.coupon_code,
-                    status_name: value.status_name,
-                    cancel_reason: value.cancel_reason,
-                    isnew_user: value.isnew_user,
-                    orders_count: value.orders_count,
-                    items: _.map(value.items)
-                };
-            } );
+
+            orders = _.filter(
+                _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
+                    var createDate = new Date( Number( value.create_date ) * 1000 );
+                    return {
+                        number: key,
+                        city: value.city,                        
+                        user_id: value.user_id,
+                        sum: Number(value.sum),
+                        delivery_sum: Number(value.delivery_sum),
+                        create_date_day: (createDate.getDate()) + " " + monthNames[createDate.getMonth()],// + " " + createDate.getFullYear(),
+                        create_date: value.create_date,
+                        create_date_month: monthNames[createDate.getMonth()] + " " + createDate.getFullYear(),
+                        merchant: value.merchant,
+                        delivery: value.delivery,
+                        transport: value.transport,
+                        coupon_code: value.coupon_code,
+                        status_name: value.status_name,
+                        cancel_reason: value.cancel_reason,
+                        isnew_user: value.isnew_user,
+                        orders_count: value.orders_count,
+                        items: _.map(value.items)
+                    };
+                } ), function(value) {
+                    return 1509148800 <= value.create_date && 1509235199 >= value.create_date;
+                    //return 1501545600 <= value.create_date && 1509494399 >= value.create_date;
+                });
     
             // create custom binding for chart
             ko.bindingHandlers.cancelOrderChartBind = {
@@ -306,7 +333,7 @@
                 })),
     
 
-                /*moscow_region = ["Нижний Новгород", "Саров", "Дзержинск"];
+                moscow_region = [];//["Нижний Новгород", "Саров", "Дзержинск"];
                 self.cities = ko.observableArray(_.map(
                             _.uniq(_.map(self.completeOrders(), 'city')), function (entry) {
                                 check = (moscow_region.indexOf(entry) != -1);
@@ -320,10 +347,11 @@
                         )
                     );*/
                 
-               /* self.filtered_orders = ko.observableArray(_.map(self.completeOrders()));
+                self.filtered_orders = ko.observableArray(_.map(self.completeOrders()));
                 self.goods = ko.observableArray();
                 self.choose_cities = ko.observableArray(_.filter(self.cities(), 'visible')),                
                 self.changeCities =  function () {
+
                         self.choose_cities(_.map(_.filter(self.cities(), 'visible'), 'name'));
     
                         var sss = self.choose_cities();
@@ -344,12 +372,49 @@
                                 }
                             })
                         });
+                        self.goods.removeAll();
                         map.forEach(function (obj) {
-                            ViewModel.goods.push(obj);
+                            self.goods.push(obj);
                         });
                     }
 
-*/
+
+                self.Sander = [];
+                _.forEach( self.completeOrders(), function( order ) {
+                            _.forEach( order.items, function( item ) {
+                                    item.city = order.city;
+                                    self.Sander.push(item);
+                                })
+                        });
+
+
+                        /*_.forEach( gr, function( value){ _.groupBy(value, "city")} )
+                    gr = _.groupBy( filt, "name")
+                    _.groupBy( filt, "name")*/
+
+                self.Sander1 = [];
+                self.goodsMedtronic = _.groupBy( _.filter( self.Sander, { brand_name:"Medtronic" } ), "name" );
+                _.forEach( self.goodsMedtronic, function(value, key, col){ 
+                    
+                    tempCity = [] 
+                    _.forEach( _.groupBy(value, 'city'), function( value, key, col){
+                        tempCity.push( { name: key, rows: value, quantity: _.sumBy(value, function(o){return Number(o.quantity)} ) })
+                    } )
+                    tempCity = _.reverse( _.sortBy(tempCity, 'quantity'));
+
+
+                    self.Sander1.push( { name: key, cities: tempCity} );
+                    //col[key]=_.groupBy(value, 'city');
+                }); 
+
+                //self.sander2 = ko.observableArray();
+               // _.forEach( self.goodsMedtronic, function( value, key){
+                //    self.sander2.push({ [key]: value});
+                //})
+                //self.medtronic = ko.observableArray(
+                    //"Medtronic"
+                //)
+                    
                 //sss= _.groupBy( orders, 'create_date_month')
                 //_.forEach( sss, function(value,key,col) { col[key] =_.groupBy(value, 'status_name')})
 
