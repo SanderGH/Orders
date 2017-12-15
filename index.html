@@ -28,24 +28,32 @@
             <h1>Выполненные заказы</h1>
             <div>
                 <label for="from">Период с </label>
-                <input type="text" id="dateFrom" name="from">
+                <input type="text" id="dateFrom" name="from" data-bind="value: $data.OrdersVM.dateFrom">
                 <label for="to">по </label>
-                <input type="text" id="dateTo" name="to">
+                <input type="text" id="dateTo" name="to" data-bind="value: $data.OrdersVM.dateTo">
             </div>
 
-            <input type="checkbox" data-bind="checked: $data.viewCount, event: {change:changeViewCount}">Показать количество</input>
-            <input type="checkbox" data-bind="checked: $data.viewCanceled, event: {change:changeViewCanceled}">Показать отмененные</input>
-            <select data-bind="options: $data.detailTypes, optionsText: 'name', optionsValue: 'id', value: selectedDetailType, event: {change:changeDetailType}"></select>
-            <input type="radio" name="typeChart" value="line" data-bind="checked: $data.typeChart, event: {change:changeTypeChart}">Line</input>
-            <input type="radio" name="typeChart" value="bar" data-bind="checked: $data.typeChart, event: {change:changeTypeChart}">Bar</input>
-            <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.group_orders"></canvas>
+            <input type="checkbox" data-bind="checked: $data.OrdersVM.viewCount, event: {change:OrdersVM.changeViewCount}">Показать количество</input>
+            <input type="checkbox" data-bind="checked: $data.OrdersVM.viewCanceled, event: {change:OrdersVM.changeViewCanceled}">Показать отмененные</input>
+            <select data-bind="options: $data.OrdersVM.detailTypes, optionsText: 'name', optionsValue: 'id', value: OrdersVM.selectedDetailType, event: {change:OrdersVM.changeDetailType}"></select>
+            <input type="radio" name="typeChart" value="line" data-bind="checked: $data.OrdersVM.typeChart, event: {change:OrdersVM.changeTypeChart}">Line</input>
+            <input type="radio" name="typeChart" value="bar" data-bind="checked: $data.OrdersVM.typeChart, event: {change:OrdersVM.changeTypeChart}">Bar</input>
+            <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.OrdersVM.group_orders"></canvas>
             <h1>Отмененные заказы</h1>
-            <canvas width="1300" height="400" id="cancelOrderChart" data-bind="cancelOrderChartBind: $data.cancel_group_orders"></canvas>
+            <canvas width="1300" height="400" id="cancelOrderChart" data-bind="cancelOrderChartBind: $data.OrdersVM.cancel_group_orders"></canvas>
+            <table>
+                <tbody data-bind="foreach: $data.OrdersVM.cancelReasons">
+                    <tr>
+                        <td data-bind="text: name"></td>
+                        <td data-bind="text: count"></td>
+                    </tr>
+                </tbody>
+            </table>                
         </div>
 
         <div id="cities" class="tabcontent">
             <h3>Города</h3>
-            <div data-bind="foreach: { data: $data.Sander1, as: 'good' }">
+            <!--<div data-bind="foreach: { data: $data.Sander1, as: 'good' }">
                 <h3 data-bind="text: name"></h3>
                 <table>
                     <tbody data-bind="foreach: { data: $data.cities, as: 'city' }">
@@ -55,21 +63,35 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div>-->
+            <ul data-bind="foreach: { data: $data.CitiesVM.cities, as: 'city'}">
+                <li>
+                    <!--<input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities }" /> -->
+                    <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities }" />
+                    <span data-bind="text: city.name" />
+                </li>
+            </ul>
         </div>
 
         <div id="brands" class="tabcontent">
             <h3>Бренды</h3>
+            <div id="brands">
+                <ul data-bind="foreach: { data: $data.BrandsVM.brands, as: 'brand'}">
+                    <li>
+                        <input type="checkbox" data-bind="checked: brand.visible" />
+                        <span data-bind="text: brand.name" />
+                    </li>
+                </ul>
+            </div>
         </div>
-
     </div>
 
     <script src="index.js"></script>
     <script>
         $(function () {
-            var dateFormat = "mm/dd/yy",
+            var dateFormat = "dd/mm/yy",
                 from = $("#dateFrom").datepicker({
-                    defaultDate: "01/01/2017",
+                    //defaultDate: "01/01/2017",
                     changeMonth: true,
                     numberOfMonths: 3
                 }).on("change", function () {
@@ -77,7 +99,7 @@
                 }),
 
                 to = $("#dateTo").datepicker({
-                    defaultDate: "+1w",
+                    //defaultDate: "+1w",
                     changeMonth: true,
                     numberOfMonths: 3
                 }).on("change", function () {
@@ -100,12 +122,6 @@
 
 </html>
 <!--  <table>
-                <tbody data-bind="foreach: cancelReasons">
-                    <tr>
-                        <td data-bind="text: name"></td>
-                        <td data-bind="text: count"></td>
-                    </tr>
-        </tbody>
        <ul data-bind="foreach: { data: $data.cities, as: 'city'}">
             <li>
                 <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities }" />

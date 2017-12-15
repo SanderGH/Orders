@@ -23,8 +23,7 @@ document.getElementById("defaultOpen").click();
 // model
 var monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 
-orders = //_.filter(
-    _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
+orders = _.map( JSON.parse(localStorage.getItem("OrdersSC") ), function(value, key) {
         var createDate = new Date( Number( value.create_date ) * 1000 );
         return {
             number: key,
@@ -49,7 +48,8 @@ orders = //_.filter(
         return 1501545600 <= value.create_date && 1509494399 >= value.create_date;
     });*/
 
-    // create viewModel
+completeOrders = _.reject( orders, { status_name: "Отменен" } );//ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
+
 // create custom binding for chart
 ko.bindingHandlers.cancelOrderChartBind = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -171,35 +171,67 @@ ko.bindingHandlers.chartBind = {
         chart.data.labels = _.map(data, 'period');
         chart.data.datasets[1].data = _.map(data, 'sum');
         chart.data.datasets[2].data = _.map(data, 'count');               
-        chart.data.datasets[2].hidden = !viewModel.viewCount();
+        chart.data.datasets[2].hidden = !viewModel.OrdersVM.viewCount();
 
-        chart.data.datasets[0].data = _.map(viewModel.cancel_group_orders(), 'sum');
-        chart.data.datasets[0].hidden = !viewModel.viewCanceled();
-        chart.data.datasets[3].data = _.map(viewModel.cancel_group_orders(), 'count');               
-        chart.data.datasets[3].hidden = !viewModel.viewCanceled();                    
+        chart.data.datasets[0].data = _.map(viewModel.OrdersVM.cancel_group_orders(), 'sum');
+        chart.data.datasets[0].hidden = !viewModel.OrdersVM.viewCanceled();
+        chart.data.datasets[3].data = _.map(viewModel.OrdersVM.cancel_group_orders(), 'count');               
+        chart.data.datasets[3].hidden = !viewModel.OrdersVM.viewCanceled();                    
         
-        chart.options.scales.yAxes[0].stacked = viewModel.viewCanceled();
-        chart.options.scales.yAxes[1].stacked = viewModel.viewCanceled();                    
+        chart.options.scales.yAxes[0].stacked = viewModel.OrdersVM.viewCanceled();
+        chart.options.scales.yAxes[1].stacked = viewModel.OrdersVM.viewCanceled();                    
         chart.update();
     }                        
 }
 // create viewModel
+function ViewModel()
+{
+    var self = this;
+    self.OrdersVM = new OrdersViewModel();
+    self.CitiesVM = new CitiesViewModel();
+    self.BrandsVM = new BrandsViewModel();    
+}
+
+function BrandsViewModel()
+{
+    var self = this;
+    var brandsArr = [];
+    _.forEach( _.map( completeOrders, 'items' ), function(items) {  _.forEach( items, function( item ){  brandsArr.push( item.brand_name );} )
+        } );
+    self.brands = ko.observableArray( 
+        _.map( 
+            _.uniq( brandsArr ) , function( brand) { 
+                return { "name": brand, "visible": false };
+            } ));
+}
+
+function CitiesViewModel()
+{
+    self = this;
+    self.cities = ko.observableArray(_.map(
+        _.uniq(_.map(completeOrders, 'city')), function (entry) {
+            return { "name": entry, "visible": false };
+        }
+    ))
+}
+
 function OrdersViewModel()
 {
     var self = this;
-    self.completeOrders = ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
+    var now = new Date();
+    self.dateFrom = ko.observable( "01/01/" + now.getFullYear() );
+    self.dateTo = ko.observable(  now.getDate() + "/" + (now.getMonth()+1) + "/" + now.getFullYear() );
+/*    self.completeOrders = ko.observableArray(_.reject( orders, { status_name: "Отменен" } ));
     self.sumOrders = ko.computed( function(){
         return _.sumBy(self.completeOrders(), 'sum');
-    })          
+    })          */
     
     self.cancelOrders = ko.observableArray(_.filter( orders, { status_name: "Отменен" }));
     self.sumCancelOrders = ko.computed( function(){
         return _.sumBy(self.cancelOrders(), 'sum');
     })          
     self.cancelReasons = ko.observableArray( 
-        _.reverse(
-            _.sortBy( 
-                _.map( 
+        _.reverse( _.sortBy( _.map( 
                     _.groupBy( self.cancelOrders(), 'cancel_reason' ), function(value, key) {
                         return { 'name' : key, 'count' : value.length }
                         }
@@ -227,7 +259,7 @@ function OrdersViewModel()
     self.detailTypes = ko.observableArray( [{ 'id': 0, 'name': "Детализация по дням"}, { 'id': 1, 'name': "Детализация по месяцам"}]);
     self.selectedDetailType = ko.observable();                
     self.changeDetailType = function(){
-        self.group_orders( _.map( _.groupBy( self.completeOrders(), self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ),
+        self.group_orders( _.map( _.groupBy( completeOrders, self.selectedDetailType() == 0 ? 'create_date_day': 'create_date_month' ),
             function(value, key){  
                 return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, 'sum')};
             }
@@ -279,30 +311,19 @@ function OrdersViewModel()
     
     }
     
-    self.brands = ko.observableArray( 
-        _.map( 
-            _.uniq( 
-                _.map( self.completeOrders(), 'brand_name') ),  
-                function (entry){
-                    return { "name": entry, "visible": false };
-    })),
 
 
     moscow_region = [];//["Нижний Новгород", "Саров", "Дзержинск"];
     self.cities = ko.observableArray(_.map(
-                _.uniq(_.map(self.completeOrders(), 'city')), function (entry) {
+                _.uniq(_.map(completeOrders, 'city')), function (entry) {
                     check = (moscow_region.indexOf(entry) != -1);
                     return { "name": entry, "visible": check };
                 }
             )
         )
-    /*self.cities = ko.observableArray( _.map( _.uniq( _.map( self.completeOrders(), 'city') ), function (entry) {
-                    return { "name": entry, "visible": false };
-                }
-            )
-        );*/
+ 
     
-    self.filtered_orders = ko.observableArray(_.map(self.completeOrders()));
+    self.filtered_orders = ko.observableArray(_.map(completeOrders));
     self.goods = ko.observableArray();
     self.choose_cities = ko.observableArray(_.filter(self.cities(), 'visible')),                
     self.changeCities =  function () {
@@ -310,7 +331,7 @@ function OrdersViewModel()
             self.choose_cities(_.map(_.filter(self.cities(), 'visible'), 'name'));
 
             var sss = self.choose_cities();
-            self.filtered_orders(_.filter(self.completeOrders(), function (entry) {
+            self.filtered_orders(_.filter(completeOrders, function (entry) {
                 return sss.indexOf(entry.city) != -1
             }));
 
@@ -335,7 +356,7 @@ function OrdersViewModel()
 
 
     self.Sander = [];
-    _.forEach( self.completeOrders(), function( order ) {
+    _.forEach( completeOrders, function( order ) {
                 _.forEach( order.items, function( item ) {
                         item.city = order.city;
                         self.Sander.push(item);
@@ -373,7 +394,7 @@ function OrdersViewModel()
     //sss= _.groupBy( orders, 'create_date_month')
     //_.forEach( sss, function(value,key,col) { col[key] =_.groupBy(value, 'status_name')})
 
-    self.group_orders =  ko.observableArray(  _.map( _.groupBy( self.completeOrders(), 'create_date_day'),
+    self.group_orders =  ko.observableArray(  _.map( _.groupBy( completeOrders, 'create_date_day'),
             function(value, key){ return { 'period' : key, 'count' : value.length, 'sum' : _.sumBy(value, 'sum') };}
     ));
 
@@ -445,5 +466,5 @@ function OrdersViewModel()
     // };             
 }
 
-ViewModel = new OrdersViewModel();
+ViewModel = new ViewModel();
 ko.applyBindings( ViewModel );
