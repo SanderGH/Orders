@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="jquery-3.2.1.js"></script>
+    <script src="lodash.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script src="Chart.js"></script>
+    <!--<script src="jquery-ui.js"></script> 
+    <link rel="stylesheet" type="text/css" href="common.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css"> -->
+</head>
+
+<body>
+    <!--<p>Период с
+        <input type="text" id="dateFrom">
+        <input type="text" id="dateTo">
+    </p> -->
+    <div>
+        <input type="checkbox" data-bind="checked: $data.OffensesVM.viewRegistered, event: {change:OffensesVM.changeViewRegistered}">Зарегистрированные</input>
+        <input type="checkbox" data-bind="checked: $data.OffensesVM.viewAssigned, event: {change:OffensesVM.changeViewRegistered}">Взятые в работу</input>
+        <input type="checkbox" data-bind="checked: $data.OffensesVM.viewClosed, event: {change:OffensesVM.changeViewRegistered}">Обработанные и закрытые</input>
+
+        <table>
+        <tr>
+            <th>ID</td>   
+            <th>Status</td>                 
+            <th>Domain</td>                 
+            <th>Severity</td>                                     
+            <th>Assigned to</td>
+            <th>Сlose time</td>
+            <th>Events</td>                
+        </tr>
+        <tbody data-bind="foreach: $data.OffensesVM.filteredOffenses">
+            <tr>
+                <td data-bind="text: id"></td>   
+                <td data-bind="text: domain_id"></td>   
+                <td data-bind="text: status"></td>                 
+                <td data-bind="text: severity"></td>                                     
+                <td data-bind="text: assigned_to"></td>
+                <td data-bind="text: close_time"></td>
+                <td data-bind="text: event_count"></td>                
+                <!--<td data-bind="text: description"></td>
+                <td data-bind="text: offense_source"></td>-->
+            </tr>
+        </tbody>
+        </table>                        
+        <!-- <div class="tab">
+            <button class="tablinks" onclick="openCity(event, 'orders')" id="defaultOpen">Заказы</button>
+            <button class="tablinks" onclick="openCity(event, 'cities')">Города</button>
+            <button class="tablinks" onclick="openCity(event, 'brands')">Бренды</button>
+        </div>
+
+        <div id="orders" class="tabcontent">
+            <h1>Выполненные заказы</h1>
+            <div>
+                <label for="from">Период с </label>
+                <input type="text" id="dateFrom" name="from" data-bind="value: $data.OrdersVM.dateFrom">
+                <label for="to">по </label>
+                <input type="text" id="dateTo" name="to" data-bind="value: $data.OrdersVM.dateTo">
+            </div>
+
+            <input type="checkbox" data-bind="checked: $data.OrdersVM.viewCount, event: {change:OrdersVM.changeViewCount}">Показать количество</input>
+            <input type="checkbox" data-bind="checked: $data.OrdersVM.viewCanceled, event: {change:OrdersVM.changeViewCanceled}">Показать отмененные</input>
+            <select data-bind="options: $data.OrdersVM.detailTypes, optionsText: 'name', optionsValue: 'id', value: OrdersVM.selectedDetailType, event: {change:OrdersVM.changeDetailType}"></select>
+            <input type="radio" name="typeChart" value="line" data-bind="checked: $data.OrdersVM.typeChart, event: {change:OrdersVM.changeTypeChart}">Line</input>
+            <input type="radio" name="typeChart" value="bar" data-bind="checked: $data.OrdersVM.typeChart, event: {change:OrdersVM.changeTypeChart}">Bar</input>
+            <canvas width="1300" height="400" id="myChart" data-bind="chartBind: $data.OrdersVM.group_orders"></canvas>
+            <h1>Отмененные заказы</h1>
+            <canvas width="1300" height="400" id="cancelOrderChart" data-bind="cancelOrderChartBind: $data.OrdersVM.cancel_group_orders"></canvas>
+            <table>
+                <tbody data-bind="foreach: $data.OrdersVM.cancelReasons">
+                    <tr>
+                        <td data-bind="text: name"></td>
+                        <td data-bind="text: count"></td>
+                    </tr>
+                </tbody>
+            </table>                
+        </div>
+
+        </div>
+
+        <div id="brands" class="tabcontent">
+            <h3>Бренды</h3>
+            <div id="brands">
+                <ul data-bind="foreach: { data: $data.BrandsVM.brands, as: 'brand'}">
+                    <li>
+                        <input type="checkbox" data-bind="checked: brand.visible" />
+                        <span data-bind="text: brand.name" />
+                    </li>
+                </ul>
+            </div>
+        </div> -->
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        offenses = _.map( JSON.parse(localStorage.getItem("offenses") ));        
+    </script>    
+</body>
+
+</html>
+<!--  <table>
+       <ul data-bind="foreach: { data: $data.cities, as: 'city'}">
+            <li>
+                <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities }" />
+                <span data-bind="text: city.name" />
+            </li>
+        </ul>
+
+        <table>
+            <tbody data-bind="foreach: goods">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: quantity"></td>
+                    <td data-bind="text: sum"></td>
+                </tr>
+        </tbody>-->
+
+<!--<table>
+            <tbody data-bind="foreach: { data: $data.goodsMedtronic, as: 'good' }">
+                <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: quantity"></td>
+                </tr>
+        </tbody>-->
+
+<!--<div id="cities">
+            <ul data-bind="foreach: { data: cities, as: 'city'}">
+                <li>
+                    <input type="checkbox" data-bind="checked: city.visible, event: { change : $parent.changeCities.bind($parent) }" />
+                    <input type="checkbox" data-bind="checked: city.visible" />
+                    <span data-bind="text: city.name" />
+                </li>
+            </ul>
+        </div>
+
+<div id="brands">
+            <ul data-bind="foreach: { data: brands, as: 'brand'}">
+                <li>
+                    <input type="checkbox" data-bind="checked: brand.visible" />
+                    <span data-bind="text: brand.name" />
+                </li>
+            </ul>
+        </div>
+    </div>
+    <table>
+        <tbody data-bind="foreach: goods">
+            <tr>
+                <td data-bind="text: name"></td>
+                <td data-bind="text: quantity"></td>
+                <td data-bind="text: sum"></td>
+            </tr>
+        </tbody>
+    </table> -->
