@@ -1,0 +1,38 @@
+<DeliveryRequest Number="1" Date="2017-12-27" Account="786705260d93a7835cc575ddb4cbb068" Secure="60c492bed5c3b85849acaee2dce3e85a" OrderCount="2">
+  <Order Number="5403" DeliveryRecipientCost="0" SendCityCode="270" RecCityCode="44" RecipientName="Васина Юлия Александровна" Phone="7810999, 9295849151" 
+         Comment="Офис группы компаний Ланит. При приезде позвонить на мобильный телефон."
+        TariffTypeCode="5" RecientCurrency="RUB" ItemsCurrency="RUB">
+    <Address PvzCode="MSK2" />
+    <Package Number="1" BarCode="101" Weight="630">
+      <Item WareKey="25000050368" Cost="49" Payment="49" Weight="68" Amount="1" Comment="Дидактические игры-занятия в ДОУ 	 	   Ст.возраст Вып. 1"/>
+      <Item WareKey="25000348563" Cost="79" Payment="79" Weight="95" Amount="1" Comment="ДошкВоспитаниеИРазвитие(Айрис-Пр.)	(о) 	   Сюжетно-роле"/>
+      <Item WareKey="25000373314" Cost="79" Payment="79" Weight="135" Amount="1" Comment="ДошкВоспитаниеИРазвитие(Айрис-Пр.)	(о) 	   Метод.работа"/>
+      <Item WareKey="25000390270" Cost="79" Payment="79" Weight="219" Amount="1" Comment="Дошкольники_УчимРазвиваемВоспитываем 	   Родительские "/>
+    </Package>
+    <AddService ServiceCode="30"></AddService>
+    <Schedule>
+      <Attempt ID="1" Date="2010-10-15" TimeBeg="09:00:00" TimeEnd="13:00:00" />
+      <Attempt ID="2" Date="2010-10-16" TimeBeg="14:00:00" TimeEnd="18:00:00" RecipientName="Прокопьев 	Анатолий Сергеевич" />
+    </Schedule>
+  </Order>
+  <Order Number="5404" DeliveryRecipientCost="150" SendCityCode="270" RecCityCode="44" RecipientName="Lubomir Dmitry Vladimirovich" Phone="9197747341"
+         SellerName="Ruston" RecientCurrency="RUB" ItemsCurrency="RUB" Comment="Офис группы компаний Ланит. При приезде позвонить на мобильный телефон."TariffTypeCode="11">
+    <Address Street="Боровая" House="д. 7, стр. 2" Flat="оф.10" />
+    <Package Number="1" BarCode="102" Weight="810">
+      <Item WareKey="25000358171" Cost="164" Payment="0" Weight="158" Amount="1" Comment="ХочуУчиться Логика (Беденко 		М.В.)"/>
+      <Item WareKey="25000428787" Cost="107" Payment="0" Weight="194" Amount="1" Comment="ЛомоносовскаяШкола(о) Считаю и 	решаю Д/детей 5-6 л"/>
+      <Item WareKey="33000002164" Cost="107"  Payment="0" Weight="174" Amount="1" Comment="ЛомоносовскаяШкола(о) Говорю 	красиво Д/детей 6-7 л"/>
+      <Item WareKey="33000002165" Cost="107" Payment="0" Weight="174" Amount="1" Comment="ЛомоносовскаяШкола(о) Говорю 	красиво Д/детей 6-7 л"/>
+    </Package>
+    <Package Number="2" BarCode="103" Weight="740">
+      <Item WareKey="25000086458" Cost="427" Payment="0" Weight="323" Amount="2" Comment="Перемены Рук-во к личной 	трансформации и новые спо"/>
+      <Item WareKey="25000377899" Cost="238" Payment="0" Weight="310" Amount="1" Comment="Коэльо П.(АСТ)(тв)(цв.) Вероника 	решает умереть"/>
+    </Package>
+    <AddService ServiceCode="29"></AddService>
+    <AddService ServiceCode="30"></AddService>
+    <Schedule>
+      <Attempt ID="3" Date="2010-10-15" TimeBeg="19:00:00" TimeEnd="22:00:00"/>
+    </Schedule>
+  </Order>
+</DeliveryRequest>
+
