@@ -4,7 +4,7 @@
 <head>
     <script src="jquery-3.2.1.js"></script>
     <script src="lodash.js"></script>
-    <script src="knockout-3.4.2.js"></script>
+    <script src="knockout-3.4.2.debug.js"></script>
     <script src="Chart.js"></script>
     <!--<script src="jquery-ui.js"></script> 
     <link rel="stylesheet" type="text/css" href="common.css">
@@ -27,24 +27,43 @@
             <th>Status</td>                 
             <th>Domain</td>                 
             <th>Severity</td>                                     
+            <th>Rules</td>                                                     
+            <th>Events</td>                             
             <th>Assigned to</td>
+            <th>Closing user</td>                
+            <th>Start time</td>
+            <th>Last update</td>                
+                
             <th>Сlose time</td>
-            <th>Events</td>                
+
+                
+            <!--offence.offense_source
+            source_addresses.source_ip
+            local_destination_addresses.local_destination_ip
+            offence.id.note -->
+                                
         </tr>
         <tbody data-bind="foreach: $data.OffensesVM.filteredOffenses">
             <tr>
                 <td data-bind="text: id"></td>   
+                <td data-bind="text: status"></td>                                 
                 <td data-bind="text: domain_id"></td>   
-                <td data-bind="text: status"></td>                 
                 <td data-bind="text: severity"></td>                                     
+                <td>List of rules</td>
+                <td data-bind="text: event_count"></td>                                
                 <td data-bind="text: assigned_to"></td>
+                <td data-bind="text: closing_user"></td>
+                <td data-bind="text: start_time"></td>
+                <td data-bind="text: last_updated_time"></td>                
                 <td data-bind="text: close_time"></td>
-                <td data-bind="text: event_count"></td>                
+
                 <!--<td data-bind="text: description"></td>
                 <td data-bind="text: offense_source"></td>-->
             </tr>
         </tbody>
-        </table>                        
+        </table>            
+        <!--<canvas width="300" height="400" id="regOffense" data-bind="regBarBind: $data.OffensesVM.filteredOffenses"></canvas>-->
+        <canvas width="20%" id="regOffense" data-bind="regBarBind: $data.OffensesVM.filteredOffenses"></canvas>
         <!-- <div class="tab">
             <button class="tablinks" onclick="openCity(event, 'orders')" id="defaultOpen">Заказы</button>
             <button class="tablinks" onclick="openCity(event, 'cities')">Города</button>

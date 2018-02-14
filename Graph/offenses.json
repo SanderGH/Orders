@@ -1,0 +1,631 @@
+[
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 6,
+        "flow_count": 0,
+        "assigned_to": "a.ivanov",
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destinattsration_networks": [
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 21,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "2001-HF-ALL-COM-MULTIPLE_OFFENSES_WITH_SAME_IP",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "HIDDEN"
+    },
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 113902,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 8,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 20,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 0,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "10.22.30.184",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "OPEN"
+    },
+    {
+        "username_count": 0,
+        "description": "0136-INV-PER-WEL-MALWARE: Service Execution from Non-System Folder\n containing A service was installed in a system\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            },
+            {
+                "id": 117554,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 672,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": "a.ivanov",
+        "close_time": 1518514569000,
+        "remote_destination_count": 0,
+        "start_time": 1511363122816,
+        "last_updated_time": 1516713976761,
+        "credibility": 2,
+        "magnitude": 1,
+        "id": 8,
+        "categories": [
+            "Information",
+            "Suspicious Activity"
+        ],
+        "severity": 3,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": 2,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "0136-INV-PER-WEL-MALWARE-SERVICE_EXECUTION-NONSYSTEM_FOLDER",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "CLOSED"
+    },
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 6,
+        "flow_count": 0,
+        "assigned_to": "a.ivanov",
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 21,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "2001-HF-ALL-COM-MULTIPLE_OFFENSES_WITH_SAME_IP",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "HIDDEN"
+    },
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 113902,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 8,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 20,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 0,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "10.22.30.184",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "OPEN"
+    },
+    {
+        "username_count": 0,
+        "description": "0136-INV-PER-WEL-MALWARE: Service Execution from Non-System Folder\n containing A service was installed in a system\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            },
+            {
+                "id": 117554,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 672,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": "a.ivanov",
+        "close_time": 1518514569000,
+        "remote_destination_count": 0,
+        "start_time": 1511363122816,
+        "last_updated_time": 1516713976761,
+        "credibility": 2,
+        "magnitude": 1,
+        "id": 8,
+        "categories": [
+            "Information",
+            "Suspicious Activity"
+        ],
+        "severity": 3,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": 2,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "0136-INV-PER-WEL-MALWARE-SERVICE_EXECUTION-NONSYSTEM_FOLDER",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "CLOSED"
+    },
+	    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 6,
+        "flow_count": 0,
+        "assigned_to": "a.ivanov",
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 21,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "2001-HF-ALL-COM-MULTIPLE_OFFENSES_WITH_SAME_IP",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "HIDDEN"
+    },
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 113902,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 8,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 20,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 0,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "10.22.30.184",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "OPEN"
+    },
+    {
+        "username_count": 0,
+        "description": "0136-INV-PER-WEL-MALWARE: Service Execution from Non-System Folder\n containing A service was installed in a system\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            },
+            {
+                "id": 117554,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 672,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": "a.ivanov",
+        "close_time": 1518514569000,
+        "remote_destination_count": 0,
+        "start_time": 1511363122816,
+        "last_updated_time": 1516713976761,
+        "credibility": 2,
+        "magnitude": 1,
+        "id": 8,
+        "categories": [
+            "Information",
+            "Suspicious Activity"
+        ],
+        "severity": 3,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": 2,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "0136-INV-PER-WEL-MALWARE-SERVICE_EXECUTION-NONSYSTEM_FOLDER",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "CLOSED"
+    },
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 6,
+        "flow_count": 0,
+        "assigned_to": "a.ivanov",
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 21,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "2001-HF-ALL-COM-MULTIPLE_OFFENSES_WITH_SAME_IP",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "HIDDEN"
+    },
+    {
+        "username_count": 0,
+        "description": "Possible UAC Bypass - A Scheduled Task Has Been Configured to Run With Highest Privileges\n containing Success Audit: A scheduled task was created\n",
+        "rules": [
+            {
+                "id": 113902,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": 8,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": null,
+        "close_time": null,
+        "remote_destination_count": 0,
+        "start_time": 1516627538668,
+        "last_updated_time": 1516627538802,
+        "credibility": 3,
+        "magnitude": 2,
+        "id": 20,
+        "categories": [
+            "Information",
+            "Misc Suspicious Event"
+        ],
+        "severity": 6,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": null,
+        "offense_type": 0,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "10.22.30.184",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "OPEN"
+    },
+    {
+        "username_count": 0,
+        "description": "0136-INV-PER-WEL-MALWARE: Service Execution from Non-System Folder\n containing A service was installed in a system\n",
+        "rules": [
+            {
+                "id": 117752,
+                "type": "CRE_RULE"
+            },
+            {
+                "id": 117554,
+                "type": "CRE_RULE"
+            }
+        ],
+        "event_count": .,
+        "flow_count": 0,
+        "assigned_to": null,
+        "security_category_count": 2,
+        "follow_up": false,
+        "source_address_ids": [
+            2
+        ],
+        "source_count": 1,
+        "inactive": false,
+        "protected": false,
+        "category_count": 2,
+        "source_network": "Net-10-172-192.Net_10_0_0_0",
+        "destination_networks": [
+            "Net-10-172-192.Net_10_0_0_0"
+        ],
+        "closing_user": "a.ivanov",
+        "close_time": 1518514569000,
+        "remote_destination_count": 0,
+        "start_time": 1511363122816,
+        "last_updated_time": 1516713976761,
+        "credibility": 2,
+        "magnitude": 1,
+        "id": 8,
+        "categories": [
+            "Information",
+            "Suspicious Activity"
+        ],
+        "severity": 3,
+        "policy_category_count": 0,
+        "device_count": 2,
+        "closing_reason_id": 2,
+        "offense_type": 14,
+        "relevance": 0,
+        "domain_id": 0,
+        "offense_source": "0136-INV-PER-WEL-MALWARE-SERVICE_EXECUTION-NONSYSTEM_FOLDER",
+        "local_destination_address_ids": [
+            2
+        ],
+        "local_destination_count": 1,
+        "status": "CLOSED"
+    }	
+]

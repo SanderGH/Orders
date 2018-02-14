@@ -25,6 +25,48 @@ document.getElementById("defaultOpen").click();*/
 
 offenses = _.map( JSON.parse(localStorage.getItem("offenses") ));
 
+ko.bindingHandlers.regBarBind = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var data = ko.unwrap(valueAccessor());
+
+        var ctx = document.getElementById('regOffense');
+        regPieChart = new Chart( ctx, {
+            type: 'pie',
+
+            // The data for our dataset
+            data: {
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Зарегистрированные'
+                },
+                legend: {
+                    position: "right"
+                } 
+            }            
+        });
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var data = ko.unwrap( valueAccessor() );
+
+        severities = ( _.map( _.groupBy( data, 'severity' ),
+            function(value, key){  
+                return { 'severity' : key, 'count' : value.length};
+            }
+        ));
+    
+        regPieChart.data.labels = _.map(severities, 'severity');
+        regPieChart.data.datasets[0].data = _.map(severities, 'count');
+        regPieChart.update();
+    }                        
+}
+
 // create viewModel
 function ViewModel()
 {
@@ -46,7 +88,7 @@ function OffensesViewModel()
                     visible = true;
                 if( self.viewAssigned() && offense.assigned_to != null && offense.close_time == null )
                     visible = true;
-                if ( self.viewClosed() && offense.assigned_to != null && offense.close_time != null )
+                if ( self.viewClosed() && offense.closing_user != null && offense.close_time != null )
                     visible = true;
 
                 return visible; 
@@ -59,17 +101,7 @@ function OffensesViewModel()
     }
 
     self.viewAssigned = ko.observable(true);
-    self.changeViewAssigned = function(){
-        //self.filteredOffenses.valueHasMutated();
-        ddd = "wdawd";        
-    }
-
     self.viewClosed = ko.observable(true);
-    self.changeViewClosed = function(){
-        //self.filteredOffenses.valueHasMutated();
-        ddd = "wdawd";        
-    }
-    
 }
 
 ViewModel = new ViewModel();
