@@ -1,0 +1,521 @@
+[{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1506502077338,
+	"name": "Kaspersky Threat Feed Service @ KL_Threat_Feed_Service_v2",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "NA",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 0,
+	"name": "Custom Rule Engine-104 :: qradarefp",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1511959392666,
+	"name": "eventcollector112",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510770987752,
+	"name": "FWSM @ 10.1.2.4",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "NA",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 0,
+	"name": "WinCollect DSM - WIN-A3UQMKITDBA",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1511956374223,
+	"name": "SIM Generic Log DSM-103 :: qradarefp",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510849148971,
+	"name": "IntruShield @ 10.1.2.6",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510768713420,
+	"name": "ASA @ 10.1.2.4",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1516724161045,
+	"name": "WinCollect @ SOCLAB-DC1",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1508942517727,
+	"name": "LogSourceTestIndentity",
+	"average_eps": 1
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1507238392276,
+	"name": "Test @ McAfee Email Gateway",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1507238400768,
+	"name": "Test @ Polygon",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1506505502677,
+	"name": "KL_Verification_Tool",
+	"average_eps": 4
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510770986751,
+	"name": "NetScreenIDP @ 10.1.2.4",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1477593281739,
+	"name": "IBM Sense",
+	"average_eps": 11
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510770981749,
+	"name": "Apache @ 10.1.2.4",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1512473334090,
+	"name": "WinCollect @ WIN-A3UQMKITDBA",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1506745007192,
+	"name": "LinuxServer @ debian",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510770967697,
+	"name": "WindowsAuthServer @ 10.1.2.4",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": [{
+			"text": "Failed to pull SSL certificate",
+			"severity": "ERROR"
+		},
+		{
+			"text": "Pulling SSL certificate for secure connection",
+			"severity": "INFO"
+		}],
+		"last_updated": 1518643695738
+	},
+	"last_event_time": 0,
+	"name": "LeoCheck",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "DISABLED",
+		"messages": [{
+			"text": "Tailing file",
+			"severity": "INFO"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 1507733082283,
+	"name": "SP Text",
+	"average_eps": 70
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": [{
+			"text": "Collecting events",
+			"severity": "INFO"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 1512473434606,
+	"name": "Informzaschita Demo",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1510770955683,
+	"name": "Snort @ 10.1.2.4",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": [{
+			"text": "Collecting Events",
+			"severity": "INFO"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 1508942754920,
+	"name": "Windows DC @10.22.27.90",
+	"average_eps": 1
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": [{
+			"text": "No route to host (Host unreachable)",
+			"severity": "ERROR"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 1506741967437,
+	"name": "Windows XP @ 10.22.30.237",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "NA",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 0,
+	"name": "WinCollect DSM - WIN-COLLECT",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1494491758015,
+	"name": " SSL Scaner @ 192.168.1.10",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1496930806527,
+	"name": "Test Log Source (Gen)",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1496843776269,
+	"name": "INC_AUT_50",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1513870118286,
+	"name": "Windows DC @ 10.1.0.97",
+	"average_eps": 18
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1514113430683,
+	"name": "SIM Generic Log DSM-109 :: izqradarec",
+	"average_eps": 1
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518781952691,
+	"name": "Asset Profiler-2 :: izqradarco",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785682873,
+	"name": "WinCollect @ WIN-COLLECT",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785659482,
+	"name": "WinCollect @ WS-NIP-TD09",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518640821060,
+	"name": "Search Results-2 :: izqradarco",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785726721,
+	"name": "System Notification-2 :: izqradarco",
+	"average_eps": 6
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785725943,
+	"name": "SIM Audit-2 :: izqradarco",
+	"average_eps": 2
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518691089797,
+	"name": "Custom Rule Engine-8 :: izqradarco",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "DISABLED",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518540215789,
+	"name": "Fake Blue Coat",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518643240059,
+	"name": "Anomaly Detection Engine-2 :: izqradarco",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518772894539,
+	"name": "WIN-COLLECT",
+	"average_eps": 2
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785623421,
+	"name": "SIM Generic Log DSM-7 :: izqradarco",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518638237682,
+	"name": "LinuxServer @ lLap",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785706041,
+	"name": "10.22.30.184WinCollect",
+	"average_eps": 2
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": null,
+		"last_updated": 0
+	},
+	"last_event_time": 1518785726879,
+	"name": "Health Metrics-2 :: izqradarco",
+	"average_eps": 362
+},
+{
+	"status": {
+		"status": "SUCCESS",
+		"messages": [{
+			"text": "Collecting Events",
+			"severity": "INFO"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 1516959229630,
+	"name": "Soclab-dc1",
+	"average_eps": 1
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": [{
+			"text": "No route to host (Host unreachable)",
+			"severity": "ERROR"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 1512536979575,
+	"name": "WindowsAuthServer@10.22.30.111",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": [{
+			"text": "No route to host (Host unreachable)",
+			"severity": "ERROR"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 0,
+	"name": "WindowsAuthServer@10.22.30.222",
+	"average_eps": 0
+},
+{
+	"status": {
+		"status": "ERROR",
+		"messages": [{
+			"text": "No route to host (Host unreachable)",
+			"severity": "ERROR"
+		}],
+		"last_updated": 0
+	},
+	"last_event_time": 0,
+	"name": "WindowsAuthServer@10.22.30.230",
+	"average_eps": 0
+}]
